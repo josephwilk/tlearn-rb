@@ -29,7 +29,7 @@ EOS
   #.data
   number_of_input_vectors_to_follow = 3497
   data = [[]]
-  data_file = = <<EOS
+  data_file = <<EOS
 distributed
 #{number_of_input_vectors_to_follow}
 EOS
