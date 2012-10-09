@@ -1,13 +1,19 @@
 module TLearn
-  number_of_output_vectors = 1750  
+  NUMBER_OF_OUTPUT_VECTORS = 1750  
+  WORKING_DIR = File.dirname(__FILE__) + '/../data'
   
-  def learn
-    `./tlearn -f evaluator -V -L -X -s 1752`
-    weights_file = "evaluator.#{number_of_output_vectors}.wts"
+  def self.learn
+    File.open("#{WORKING_DIR}/evaulator.cf", "w") do |f|
+      f.write(evaulator_config)
+    end
+    
+    `cd #{WORKING_DIR} && ../bin/tlearn -f evaluator -V -L -X -s 1752`
+    weights_file = "evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts"
   end
   
   #.cf  
-  evaulator_config = <<EOS
+  def self.evaulator_config
+    config =<<EOS
 NODES:
 nodes = 86
 inputs = 77
@@ -25,6 +31,8 @@ linear = 47-86
 weight_limit = 1.00
 selected = 1-86  
 EOS
+    config
+  end
 
   #.data
   number_of_input_vectors_to_follow = 3497
@@ -37,7 +45,7 @@ EOS
   #.teach
   teach_file = <<EOS
 distributed
-#{number_of_output_vectors}
+#{NUMBER_OF_OUTPUT_VECTORS}
 EOS
 
   #.reset
