@@ -8,6 +8,16 @@ To get some training on:
 <pre><code>rake train
 </code></pre>
 
+Usage
+=========
+
+<pre><code>
+  require 'tlearn'
+  
+  TLearn.train{[1,0,0,0] => [1]}
+  TLearn.fitness([1,0,0,0])
+</code></pre>
+
 License
 =========
 
