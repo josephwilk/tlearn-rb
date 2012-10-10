@@ -33,8 +33,8 @@ module TLearn
       FileUtils.rm_f(Dir.glob("#{WORKING_DIR}/*"))
     end
 
-    def training_successful?
-      File.exists?("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.#{NUMBER_OF_OUTPUT_VECTORS}.wts")
+    def training_successful?(number_of_sweeps)
+      File.exists?("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.#{number_of_sweeps}.wts")
     end
 
     def execute_tlearn(number_of_sweeps)
