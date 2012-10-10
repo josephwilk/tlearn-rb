@@ -16,25 +16,42 @@ module TLearn
     weights_file = "evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts"
   end
   
-  #.cf  
   def self.evaulator_config
+    nodes_config = {
+      :nodes => 86,
+      :inputs => 77,
+      :outputs => 6,
+      :output_nodes => '41-46'
+    }
+    connections_config = {
+      :groups => 0,
+      '1-81' => '0',
+      '1-40' => 'i1-i77',
+      '41-46' => '1-40',
+      '1-40' =>  '47-86',
+      '47-86' => ' 1-40 = 1. & 1. fixed one-to-one'
+    }
+    special_config = {
+      :linear => '47-86',
+      :weight_limit => '1.00',
+      :selected => '1-86'
+    }
+
+    output_nodes = nodes_config.delete(:output_nodes)
+    node_config_strings = nodes_config.map{|key,value| "#{key.to_s.gsub('_',' ')} = #{value}" }
+    node_config_strings << "output nodes are #{output_nodes}"
+
+    groups = connections_config.delete(:groups)
+    connection_config_strings = connections_config.map{|key,value| "#{key} from #{value}" }
+    connection_config_strings =  ["groups = #{groups}"] + connection_config_strings
+
     config = <<EOS
 NODES:
-nodes = 86
-inputs = 77
-outputs = 6
-output nodes are 41-46
+#{node_config_strings.join("\n")}
 CONNECTIONS:
-groups = 0
-1-81 from 0
-1-40 from i1-i77
-41-46 from 1-40
-1-40 from 47-86
-47-86 from 1-40 = 1. & 1. fixed one-to-one
+#{connection_config_strings.join("\n")}
 SPECIAL:
-linear = 47-86
-weight_limit = 1.00
-selected = 1-86  
+#{special_config.map{|key,value| "#{key} = #{value}" }.join("\n")}
 EOS
   end
 
