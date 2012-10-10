@@ -7,3 +7,7 @@ task :train do
   
   TLearn.train(training_data, sweeps = 1000)
 end
+
+task :fitness do
+  TLearn.fitness([0] * 77, sweeps = 1000)
+end

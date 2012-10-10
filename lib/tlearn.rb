@@ -12,6 +12,14 @@ module TLearn
   
   class << self
   
+    def fitness(data, number_of_sweeps = DEFAULT_NUMBER_OF_SWEEPS)
+      `cd #{WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{TLEARN_NAMESPACE} -l evaluator.#{number_of_sweeps}.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP} > evaluator.output`
+        
+      output = File.read("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.output")
+      output = output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
+      p output
+    end
+  
     def train(training_data, number_of_sweeps = DEFAULT_NUMBER_OF_SWEEPS)
       clear_previous_session
       
@@ -115,6 +123,10 @@ EOS
       reset_file = <<EOS
 #{NUMBER_OF_RESET_TIMEPOINTS}
 EOS
+    end
+    
+    def number_of_outputs(training_data)
+      training_data.values[0].length
     end
   
   end
