@@ -20,8 +20,12 @@ module TLearn
       setup_data(training_data)
 
       execute_tlearn(number_of_sweeps)
-
-      puts("[Error] Training failed") unless training_successful?
+      
+      if training_successful?(number_of_sweeps)
+        puts File.read("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.#{number_of_sweeps}.wts")
+      else
+        puts("[Error] Training failed") 
+      end
     end
     
     private
