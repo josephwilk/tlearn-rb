@@ -1,5 +1,4 @@
 module TLearn
-  NUMBER_OF_OUTPUT_VECTORS = 1750  
   NUMBER_OF_RESET_TIMEPOINTS = 3497
   DEFAULT_NUMBER_OF_SWEEPS = 1333000
 
@@ -107,7 +106,7 @@ EOS
     def build_teach_data(training_data)
       teach_file = <<EOS
 distributed
-#{NUMBER_OF_OUTPUT_VECTORS}
+#{training_data.values.length}
 #{training_data.values.map{|value| value.join(" ")}.join("\n")}
 EOS
     end
