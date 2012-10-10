@@ -7,7 +7,9 @@ module TLearn
   TLEARN_EXECUTABLE = '../bin/tlearn'
   TLEARN_NAMESPACE = 'evaluator'
   
-  EXTERNAL_RESET_FILE = ''#'-X'
+  EXTERNAL_RESET_FILE = '-X'
+  VERIFY_OUTPUTS_ON_EACH_SWEEP = '-V'
+  USE_RTRL_TEMPORALLY_RECURRENT_LEARNING = '-L'
   
   class << self
   
@@ -33,7 +35,7 @@ module TLearn
     end
 
     def execute_tlearn(number_of_sweeps)
-      `cd #{WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{TLEARN_NAMESPACE} -V -L #{EXTERNAL_RESET_FILE} -s #{number_of_sweeps}`
+      `cd #{WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
     end
 
     def setup_config(training_data)
