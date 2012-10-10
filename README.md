@@ -11,12 +11,12 @@ To get some training on:
 Usage
 =========
 
-<pre><code>
+```ruby
   require 'tlearn'
   
   TLearn.train{[1,0,0,0] => [1]}
   TLearn.fitness([1,0,0,0])
-</code></pre>
+```
 
 License
 =========
