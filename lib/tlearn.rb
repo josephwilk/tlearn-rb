@@ -1,7 +1,6 @@
 module TLearn
   NUMBER_OF_OUTPUT_VECTORS = 1750  
   NUMBER_OF_RESET_TIMEPOINTS = 3497
-  NUMBER_OF_INPUT_VECTORS_TO_FOLLOW = 3497
 
   WORKING_DIR = File.dirname(__FILE__) + '/../data'
   
@@ -75,10 +74,12 @@ EOS
     end
 
     def build_data(training_data)
+      number_of_input_vectors_to_follow = training_data.values.length
+      
       data_file = <<EOS
 distributed
-#{NUMBER_OF_INPUT_VECTORS_TO_FOLLOW}
-#{training_data.keys.join("\n")}
+#{number_of_input_vectors_to_follow}
+#{training_data.keys.map{|key| key.join("")}.join("\n")}
 EOS
     end
 
