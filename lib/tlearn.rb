@@ -1,37 +1,49 @@
 module TLearn
   NUMBER_OF_OUTPUT_VECTORS = 1750  
   NUMBER_OF_RESET_TIMEPOINTS = 3497
+  DEFAULT_NUMBER_OF_SWEEPS = 1333000
 
   WORKING_DIR = File.dirname(__FILE__) + '/../data'
+  TLEARN_EXECUTABLE = '../bin/tlearn'
+  TLEARN_NAMESPACE = 'evaluator'
+  
+  EXTERNAL_RESET_FILE = ''#'-X'
   
   class << self
   
-    def train(training_data)
+    def train(training_data, number_of_sweeps = DEFAULT_NUMBER_OF_SWEEPS)
+      clear_previous_session
+      
       setup_config(training_data)
       setup_data(training_data)
-      execute_tlearn
+
+      execute_tlearn(number_of_sweeps)
 
       puts("[Error] Training failed") unless training_successful?
     end
     
     private
 
-    def training_successful?
-      File.exists?("#{WORKING_DIR}/evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts")
+    def clear_previous_session
+      FileUtils.rm_f(Dir.glob("#{WORKING_DIR}/*"))
     end
 
-    def execute_tlearn
-      `cd #{WORKING_DIR} && ../bin/tlearn -f evaulator -V -L -X -s 1752`
+    def training_successful?
+      File.exists?("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.#{NUMBER_OF_OUTPUT_VECTORS}.wts")
+    end
+
+    def execute_tlearn(number_of_sweeps)
+      `cd #{WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{TLEARN_NAMESPACE} -V -L #{EXTERNAL_RESET_FILE} -s #{number_of_sweeps}`
     end
 
     def setup_config(training_data)
-      File.open("#{WORKING_DIR}/evaulator.cf",    "w") {|f| f.write(evaulator_config(training_data))}
+      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.cf",    "w") {|f| f.write(evaulator_config(training_data))}
     end
 
     def setup_data(training_data)
-      File.open("#{WORKING_DIR}/evaulator.reset", "w") {|f| f.write(reset_config)}
-      File.open("#{WORKING_DIR}/evaulator.data",  "w") {|f| f.write(build_data(training_data))}
-      File.open("#{WORKING_DIR}/evaulator.teach", "w") {|f| f.write(build_teach_data(training_data))}
+      #File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.reset", "w") {|f| f.write(reset_config)}
+      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(training_data))}
+      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
   
     def evaulator_config(training_data)
@@ -82,7 +94,7 @@ EOS
       data_file = <<EOS
 distributed
 #{number_of_input_vectors_to_follow}
-#{training_data.keys.map{|key| key.join("")}.join("\n")}
+#{training_data.keys.map{|key| key.join(" ")}.join("\n")}
 EOS
     end
 
@@ -90,7 +102,7 @@ EOS
       teach_file = <<EOS
 distributed
 #{NUMBER_OF_OUTPUT_VECTORS}
-#{training_data.values.join("\n")}
+#{training_data.values.map{|value| value.join(" ")}.join("\n")}
 EOS
     end
   
