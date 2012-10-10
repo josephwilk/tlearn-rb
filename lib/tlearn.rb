@@ -7,7 +7,7 @@ module TLearn
   class << self
   
     def train(training_data)
-      setup_config
+      setup_config(training_data)
       setup_data(training_data)
       execute_tlearn
 
@@ -24,8 +24,8 @@ module TLearn
       `cd #{WORKING_DIR} && ../bin/tlearn -f evaulator -V -L -X -s 1752`
     end
 
-    def setup_config
-      File.open("#{WORKING_DIR}/evaulator.cf",    "w") {|f| f.write(evaulator_config)}
+    def setup_config(training_data)
+      File.open("#{WORKING_DIR}/evaulator.cf",    "w") {|f| f.write(evaulator_config(training_data))}
     end
 
     def setup_data(training_data)
@@ -34,11 +34,14 @@ module TLearn
       File.open("#{WORKING_DIR}/evaulator.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
   
-    def evaulator_config
+    def evaulator_config(training_data)
+      no_of_inputs  = training_data.keys[0].length
+      no_of_outputs = training_data.values[0].length
+      
       nodes_config = {
         :nodes => 86,
-        :inputs => 77,
-        :outputs => 6,
+        :inputs => no_of_inputs,
+        :outputs => no_of_outputs,
         :output_nodes => '41-46'
       }
       connections_config = {
