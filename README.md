@@ -12,10 +12,10 @@ Usage
 =========
 
 ```ruby
-  require 'tlearn'
+require 'tlearn'
   
-  TLearn.train{[1,0,0,0] => [1]}
-  TLearn.fitness([1,0,0,0])
+TLearn.train({[1,0,0,0] => [1]})
+TLearn.fitness([1,0,0,0])
 ```
 
 License
