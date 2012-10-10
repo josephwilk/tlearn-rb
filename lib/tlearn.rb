@@ -1,19 +1,24 @@
 module TLearn
   NUMBER_OF_OUTPUT_VECTORS = 1750  
+  NUMBER_OF_RESET_TIMEPOINTS = 3497
+  NUMBER_OF_INPUT_VECTORS_TO_FOLLOW = 3497
+
   WORKING_DIR = File.dirname(__FILE__) + '/../data'
   
   def self.learn
-    File.open("#{WORKING_DIR}/evaulator.cf", "w") do |f|
-      f.write(evaulator_config)
-    end
+    File.open("#{WORKING_DIR}/evaulator.cf",    "w") {|f| f.write(evaulator_config)}
+    File.open("#{WORKING_DIR}/evaulator.reset", "w") {|f| f.write(reset_config)}
+    File.open("#{WORKING_DIR}/evaulator.data",  "w") {|f| f.write(data)}
+    File.open("#{WORKING_DIR}/evaulator.teach", "w") {|f| f.write(teach_data)}
     
-    `cd #{WORKING_DIR} && ../bin/tlearn -f evaluator -V -L -X -s 1752`
+    `cd #{WORKING_DIR} && ../bin/tlearn -f evaulator -V -L -X -s 1752`
+    
     weights_file = "evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts"
   end
   
   #.cf  
   def self.evaulator_config
-    config =<<EOS
+    config = <<EOS
 NODES:
 nodes = 86
 inputs = 77
@@ -31,26 +36,25 @@ linear = 47-86
 weight_limit = 1.00
 selected = 1-86  
 EOS
-    config
   end
 
-  #.data
-  number_of_input_vectors_to_follow = 3497
-  data = [[]]
-  data_file = <<EOS
+  def self.data
+    data_file = <<EOS
 distributed
-#{number_of_input_vectors_to_follow}
+#{NUMBER_OF_INPUT_VECTORS_TO_FOLLOW}
 EOS
+  end
 
-  #.teach
-  teach_file = <<EOS
+  def self.teach_data
+    teach_file = <<EOS
 distributed
 #{NUMBER_OF_OUTPUT_VECTORS}
 EOS
-
-  #.reset
-  number_of_reset_timepoints = 3497
-  reset_file = <<EOS
-#{number_of_reset_timepoints}
+  end
+  
+  def self.reset_config
+    reset_file = <<EOS
+#{NUMBER_OF_RESET_TIMEPOINTS}
 EOS
+  end
 end
