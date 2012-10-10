@@ -1,7 +1,12 @@
 tlearn-rb
 =========
 
-Ruby bindings for tlearn neural network simulator (http://crl.ucsd.edu/innate/tlearn.html)
+Ruby helping make tlearn neural network simulator sane(ish) (http://crl.ucsd.edu/innate/tlearn.html)
+
+To get some training on:
+
+<pre><code>rake train
+</code></pre>
 
 License
 =========
