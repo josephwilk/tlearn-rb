@@ -7,17 +7,19 @@ module TLearn
   
   class << self
   
-    def train
+    def train(training_data)
       setup_config
-      setup_data
+      setup_data(training_data)
       execute_tlearn
 
-      if !File.exists?("#{WORKING_DIR}/evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts")
-        puts "[Error] Training failed"
-      end
+      puts("[Error] Training failed") unless training_successful?
     end
     
     private
+
+    def training_successful?
+      File.exists?("#{WORKING_DIR}/evaluator.#{NUMBER_OF_OUTPUT_VECTORS}.wts")
+    end
 
     def execute_tlearn
       `cd #{WORKING_DIR} && ../bin/tlearn -f evaulator -V -L -X -s 1752`
@@ -27,10 +29,10 @@ module TLearn
       File.open("#{WORKING_DIR}/evaulator.cf",    "w") {|f| f.write(evaulator_config)}
     end
 
-    def setup_data
+    def setup_data(training_data)
       File.open("#{WORKING_DIR}/evaulator.reset", "w") {|f| f.write(reset_config)}
-      File.open("#{WORKING_DIR}/evaulator.data",  "w") {|f| f.write(data)}
-      File.open("#{WORKING_DIR}/evaulator.teach", "w") {|f| f.write(teach_data)}
+      File.open("#{WORKING_DIR}/evaulator.data",  "w") {|f| f.write(build_data(training_data))}
+      File.open("#{WORKING_DIR}/evaulator.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
   
     def evaulator_config
@@ -72,17 +74,19 @@ SPECIAL:
 EOS
     end
 
-    def data
+    def build_data(training_data)
       data_file = <<EOS
 distributed
 #{NUMBER_OF_INPUT_VECTORS_TO_FOLLOW}
+#{training_data.keys.join("\n")}
 EOS
     end
 
-    def teach_data
+    def build_teach_data(training_data)
       teach_file = <<EOS
 distributed
 #{NUMBER_OF_OUTPUT_VECTORS}
+#{training_data.values.join("\n")}
 EOS
     end
   
