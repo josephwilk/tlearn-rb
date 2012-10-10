@@ -63,32 +63,32 @@ module TLearn
       connection_config_strings =  ["groups = #{groups}"] + connection_config_strings
 
       config = <<EOS
-  NODES:
-  #{node_config_strings.join("\n")}
-  CONNECTIONS:
-  #{connection_config_strings.join("\n")}
-  SPECIAL:
-  #{special_config.map{|key,value| "#{key} = #{value}" }.join("\n")}
+NODES:
+#{node_config_strings.join("\n")}
+CONNECTIONS:
+#{connection_config_strings.join("\n")}
+SPECIAL:
+#{special_config.map{|key,value| "#{key} = #{value}" }.join("\n")}
 EOS
     end
 
     def data
       data_file = <<EOS
-  distributed
-  #{NUMBER_OF_INPUT_VECTORS_TO_FOLLOW}
+distributed
+#{NUMBER_OF_INPUT_VECTORS_TO_FOLLOW}
 EOS
     end
 
     def teach_data
       teach_file = <<EOS
-  distributed
-  #{NUMBER_OF_OUTPUT_VECTORS}
+distributed
+#{NUMBER_OF_OUTPUT_VECTORS}
 EOS
     end
   
     def reset_config
       reset_file = <<EOS
-  #{NUMBER_OF_RESET_TIMEPOINTS}
+#{NUMBER_OF_RESET_TIMEPOINTS}
 EOS
     end
   
