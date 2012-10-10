@@ -7,7 +7,7 @@ module TLearn
   
   class << self
   
-    def learn
+    def train
       setup_config
       setup_data
       execute_tlearn
