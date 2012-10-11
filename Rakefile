@@ -9,7 +9,7 @@ neural_network_config = {:nodes       => {:nodes => 86},
                          :special     => {:linear => '47-86',
                                           :weight_limit => '1.00',
                                           :selected => '1-86'}}
-
+                                          
 desc "Start a training session"
 task :train do
   tlearn = TLearn.new(neural_network_config)
@@ -32,4 +32,11 @@ task :fitness do
   rank = ratings.rindex(ratings.max) + 1
 
   puts "rank: #{rank} => #{test_subject}"
+end
+
+task :install do
+  `mkdir -p tmp`
+  `cd tmp && wget ftp://ftp.crl.ucsd.edu/pub/neuralnets/tlearn_src/tlearn_unix.tar.gz && tar -xf tlearn_unix.tar.gz`
+  `cd tmp/tlearn && make && cp tlearn ../../bin/`
+  `rm -rf tmp/tlearn`
 end
