@@ -3,10 +3,18 @@ TLearn Ruby
 
 Ruby helping make tlearn neural network simulator sane(ish) (http://crl.ucsd.edu/innate/tlearn.html)
 
-To get some training on:
+To see an example run:
 
 <pre><code>rake train
+  rake fitness
 </code></pre>
+
+Seriously? Just use FANN!
+=========
+
+TLearn supports recurrent networks (http://en.wikipedia.org/wiki/Recurrent_neural_network), FANN does not. Recurrent networks maintain state, enabling the context of previous inputs to effect further outputs. 
+
+While there have been attempts to add recurrent networks to FANN (http://leenissen.dk/fann/forum/viewtopic.php?t=47) these are still sitting on a dead branch that was never merged into master.
 
 Usage
 =========
