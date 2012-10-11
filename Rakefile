@@ -9,29 +9,34 @@ neural_network_config = {:nodes       => {:nodes => 86},
                          :special     => {:linear => '47-86',
                                           :weight_limit => '1.00',
                                           :selected => '1-86'}}
+
+SWEEPS = 100
+
+tlearn = TLearn.new(neural_network_config)
                                           
 desc "Start a training session"
 task :train do
-  tlearn = TLearn.new(neural_network_config)
-  
   training_data = {[0] * 77 => [1, 0, 0, 0, 0, 0],
                    [1] * 77 => [0, 0, 0, 0, 0, 1]} 
   
-  tlearn.train(training_data, sweeps = 1000)
+  tlearn.train(training_data, sweeps = SWEEPS)
 end
 
-task :fitness do
-  test_subject = [1] * 77
-  
-  tlearn = TLearn.new(neural_network_config)
-  
-  ratings = tlearn.fitness(test_subject, sweeps = 1000)
+desc "Use trained network to evaluate an input"
+task :fitness => [:train] do
+  #test_subject_1 = (1..77).map { [0, 1].sample }.join
 
-  p ratings, ""
+  test_subject_1 = [0] * 77
+  test_subject_2 = [1] * 77
   
-  rank = ratings.rindex(ratings.max) + 1
+  rating_1 = tlearn.fitness(test_subject_1, sweeps = SWEEPS)
+  rating_2 = tlearn.fitness(test_subject_2, sweeps = SWEEPS)
 
-  puts "rank: #{rank} => #{test_subject}"
+  [[rating_1, test_subject_1], [rating_2, test_subject_2]].each do |ratings, subject|
+    rank = ratings.rindex(ratings.max) + 1
+    puts "rank: #{rank} => #{subject}"
+    p ratings, ""
+  end
 end
 
 task :install do
