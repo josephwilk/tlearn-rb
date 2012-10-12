@@ -67,7 +67,7 @@ EOS
       teach_file = <<EOS
 distributed
 #{training_data.no_of_data_values}
-#{output_data.join("\n")}
+#{training_data.output_data.join("\n")}
 EOS
     end
   
