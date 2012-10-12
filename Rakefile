@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rspec/core/rake_task'
+
 require File.dirname(__FILE__) + '/lib/tlearn'
 
 neural_network_config = {:nodes       => {:nodes => 86},
@@ -43,14 +44,14 @@ end
 
 task :install do
   `mkdir -p tmp`
-  `cd tmp && wget ftp://ftp.crl.ucsd.edu/pub/neuralnets/tlearn_src/tlearn_unix.tar.gz && tar -xf tlearn_unix.tar.gz`
+  `cd tmp && wget --quiet ftp://ftp.crl.ucsd.edu/pub/neuralnets/tlearn_src/tlearn_unix.tar.gz && tar -xf tlearn_unix.tar.gz`
   
   make = File.read('tmp/tlearn/Makefile')
   make.gsub!('EXP=-DEXP_TABLE=\"$(EXP_LOC)\"', '#EXP=-DEXP_TABLE=\"$(EXP_LOC)\"')
   make.gsub!('EXP_LOC=/usr/local/lib/exp/exp_table', '#EXP_LOC=/usr/local/lib/exp/exp_table')
   File.open('tmp/tlearn/Makefile', 'w'){|f| f.write(make)}
   
-  `cd tmp/tlearn && make && cp tlearn ../../bin/`
+  `cd tmp/tlearn && make > /dev/null 2>&1 && cp tlearn ../../bin/`
   `rm -rf tmp/tlearn`
 end
 
