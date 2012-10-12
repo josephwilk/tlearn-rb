@@ -13,11 +13,13 @@ describe "TLearn" do
                      :selected => '1-86'}}
   }
   
+  let(:out){ StringIO.new }
+  
   it "should train the tlearn neural network" do
     training_data = [{[1] * 77 => [1, 0, 0, 0, 0, 0]}, {[1] * 77 => [1, 0, 0, 0, 0, 0]}],
                     [{[0] * 77 => [0, 0, 0, 0, 0, 1]}]
   
-    tlearn = TLearn::Run.new(config)
+    tlearn = TLearn::Run.new(config, out)
     
     tlearn.train(training_data, sweeps = 1)
   end
@@ -26,7 +28,7 @@ describe "TLearn" do
     test_subject_1 = [0] * 77
     test_subject_2 = [1] * 77
   
-    tlearn = TLearn::Run.new(config)
+    tlearn = TLearn::Run.new(config, out)
   
     rating_1 = tlearn.fitness(test_subject_1, sweeps = 1)
     rating_2 = tlearn.fitness(test_subject_2, sweeps = 1)

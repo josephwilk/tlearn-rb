@@ -20,10 +20,7 @@ module TLearn
       execute_tlearn_fitness(number_of_sweeps)
     
       output = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
-      output = output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
-      output.each{|o| p o}
-      p
-      output[-1]
+      output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
     end
   
     def train(training_data, number_of_sweeps = DEFAULT_NUMBER_OF_SWEEPS)
@@ -35,10 +32,11 @@ module TLearn
       execute_tlearn_train(number_of_sweeps)
           
       if training_successful?(number_of_sweeps)
-        puts File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts").split("\n")
+        weights = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts").split("\n")
         `cp #{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts #{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.wts`
+        weights.map{|line| line.split("\t").map{|number| number.strip}}
       else
-        puts("[Error] Training failed") 
+        false
       end
     end
     
