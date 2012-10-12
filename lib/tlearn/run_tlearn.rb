@@ -1,7 +1,6 @@
 module TLearn
   class RunTLearn
     TLEARN_EXECUTABLE = '../bin/tlearn'
-
   
     EXTERNAL_RESET_FILE = '-X'
     VERIFY_OUTPUTS_ON_EACH_SWEEP = '-V'
@@ -16,11 +15,11 @@ module TLearn
       
       FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
 
-      @config.setup_fitness_data({data => []})
+      @config.setup_fitness_data(data)
         
       execute_tlearn_fitness(number_of_sweeps)
     
-      output = File.read("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.output")
+      output = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
       output = output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
       output.each{|o| p o}
       p
@@ -62,7 +61,7 @@ module TLearn
     end
 
     def execute_tlearn_train(number_of_sweeps)
-      `cd #{WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
+      `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
     end
 
   end
