@@ -9,11 +9,11 @@ module TLearn
     end
 
     def output_data
-      []
+      @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.values[0] }}
     end
     
     def data
-      []
+      @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.keys[0] }}
     end
 
     def no_of_data_values
@@ -28,9 +28,5 @@ module TLearn
       @data_list[0][0].values[0].length
     end
       
-    def flattern_training_data(training_data_list)
-      
-    end
-    
   end
 end
