@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'rspec/core/rake_task'
 require File.dirname(__FILE__) + '/lib/tlearn'
 
 neural_network_config = {:nodes       => {:nodes => 86},
@@ -12,12 +14,12 @@ neural_network_config = {:nodes       => {:nodes => 86},
 
 SWEEPS = 100
 
-tlearn = TLearn.new(neural_network_config)
+tlearn = TLearn::Run.new(neural_network_config)
                                           
 desc "Start a training session"
 task :train do
-  training_data = {[0] * 77 => [1, 0, 0, 0, 0, 0],
-                   [1] * 77 => [0, 0, 0, 0, 0, 1]} 
+  training_data = {[[0] * 77, [1, 0, 0, 0, 0, 0]],
+                   [[1] * 77, [0, 0, 0, 0, 0, 1]]} 
   
   tlearn.train(training_data, sweeps = SWEEPS)
 end
@@ -45,3 +47,10 @@ task :install do
   `cd tmp/tlearn && make && cp tlearn ../../bin/`
   `rm -rf tmp/tlearn`
 end
+
+RSpec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(:spec_integration) do |spec|
+  spec.pattern = 'spec_integration/**/*_spec.rb'
+end
+
+task :default => [:spec, :spec_integration]
