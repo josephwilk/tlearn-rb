@@ -18,8 +18,8 @@ tlearn = TLearn::Run.new(neural_network_config)
                                           
 desc "Start a training session"
 task :train do
-  training_data = {[[0] * 77, [1, 0, 0, 0, 0, 0]],
-                   [[1] * 77, [0, 0, 0, 0, 0, 1]]} 
+  training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
+                  [{[1] * 77 => [0, 0, 0, 0, 0, 1]}]
   
   tlearn.train(training_data, sweeps = SWEEPS)
 end
