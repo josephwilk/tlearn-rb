@@ -2,4 +2,4 @@ rvm:
   - 1.9.3
 
 before_install:
-  - bundle exec rake install
+  - bundle install && bundle exec rake install
