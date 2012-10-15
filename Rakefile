@@ -13,7 +13,7 @@ neural_network_config = {:nodes       => {:nodes => 86},
                                           :weight_limit => '1.00',
                                           :selected => '1-86'}}
 
-SWEEPS = 100
+SWEEPS = 1000
 
 tlearn = TLearn::Run.new(neural_network_config)
                                           
@@ -27,8 +27,6 @@ end
 
 desc "Use trained network to evaluate an input"
 task :fitness => [:train] do
-  #test_subject_1 = (1..77).map { [0, 1].sample }.join
-
   test_subject_1 = [0] * 77
   test_subject_2 = [1] * 77
   
