@@ -14,11 +14,15 @@ module TLearn
     end
 
     def output_data
-      @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.values[0] }}
+      @data_list.reduce([]){|all_data, data| all_data + data.
+        reduce([]){|data_list, data_hash| data_list << data_hash.values[0] }
+      }
     end
 
     def data
-      @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.keys[0] }}
+      @data_list.reduce([]){|all_data, data| all_data + data.
+        reduce([]){|data_list, data_hash| data_list << data_hash.keys[0] }
+      }
     end
     
     def no_of_data_values
