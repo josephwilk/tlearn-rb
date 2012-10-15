@@ -14,8 +14,8 @@ module TLearn
   
     def fitness(data, number_of_sweeps = @config.number_of_sweeps)
       raise UntrainedError.new("Train me first!") unless network_trained?
-      
-      FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
+
+      clear_previous_fitness_session
 
       @config.setup_fitness_data(data)
         
@@ -26,7 +26,7 @@ module TLearn
     end
   
     def train(training_data, number_of_sweeps = @config.number_of_sweeps)
-      clear_previous_session
+      clear_entire_training_data
       
       @config.setup_config(training_data)
       @config.setup_training_data(training_data)
@@ -44,7 +44,11 @@ module TLearn
     
     private
 
-    def clear_previous_session
+    def clear_previous_fitness_session
+      FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
+    end
+
+    def clear_entire_training_data
       FileUtils.rm_f(Dir.glob("#{Config::WORKING_DIR}/*"))
     end
 
@@ -57,6 +61,8 @@ module TLearn
     end
   
     def execute_tlearn_fitness(number_of_sweeps)
+      `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP}`
+      
       `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP} > evaluator.output`
     end
 
