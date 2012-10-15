@@ -4,11 +4,11 @@ require 'rspec/core/rake_task'
 require File.dirname(__FILE__) + '/lib/tlearn'
 
 neural_network_config = {:nodes       => {:nodes => 86},
-                         :connections => {'1-81' => '0',
-                                          '1-40' => 'i1-i77',
-                                          '41-46' => '1-40',
-                                          '1-40' =>  '47-86',
-                                          '47-86' => ' 1-40 = 1. & 1. fixed one-to-one'},
+                         :connections => [{'1-81' => '0'},
+                                          {'1-40' => 'i1-i77'},
+                                          {'41-46' => '1-40'},
+                                          {'1-40' =>  '47-86'},
+                                          {'47-86' => ' 1-40 = 1. & 1. fixed one-to-one'}],
                          :special     => {:linear => '47-86',
                                           :weight_limit => '1.00',
                                           :selected => '1-86'}}
@@ -19,8 +19,8 @@ tlearn = TLearn::Run.new(neural_network_config)
                                           
 desc "Start a training session"
 task :train do
-  training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
-                  [{[1] * 77 => [0, 0, 0, 0, 0, 1]}]
+  training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}, {[0] * 77 => [1, 0, 0, 0, 0, 0]}],
+                  [{[1] * 77 => [0, 0, 0, 0, 0, 1]}, {[1] * 77 => [1, 0, 0, 0, 0, 0]}]
   
   tlearn.train(training_data, sweeps = SWEEPS)
 end

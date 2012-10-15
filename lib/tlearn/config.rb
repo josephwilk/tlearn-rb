@@ -34,15 +34,13 @@ module TLearn
         :outputs => training_data.no_of_outputs,
         :output_nodes => '41-46'
       }
-      @connections_config[:groups] = 0
   
       output_nodes = nodes_config.delete(:output_nodes)
       node_config_strings = nodes_config.map{|key,value| "#{key.to_s.gsub('_',' ')} = #{value}" }
       node_config_strings << "output nodes are #{output_nodes}"
 
-      groups = @connections_config.delete(:groups)
-      connection_config_strings = @connections_config.map{|key,value| "#{key} from #{value}" }
-      connection_config_strings =  ["groups = #{groups}"] + connection_config_strings
+      connection_config_strings = @connections_config.map{|mapping| "#{mapping.keys[0]} from #{mapping.values[0]}" }
+      connection_config_strings =  ["groups = #{0}"] + connection_config_strings
     
 
       config = <<EOS
