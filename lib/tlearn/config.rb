@@ -64,12 +64,13 @@ EOS
     end
 
     def build_teach_data(training_data)
-      debugger
+      data_strings = training_data.output_data.map{|d| d.join(" ")}
+      data_strings = data_strings.each_with_index.map{|data, index| "#{index} #{data}" }
       
       teach_file = <<EOS
 distributed
 #{training_data.no_of_data_values}
-#{training_data.output_data.map{|d| d.join(" ")}.join("\n")}
+#{data_strings.join("\n")}
 EOS
     end
   
