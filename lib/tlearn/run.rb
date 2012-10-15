@@ -12,7 +12,7 @@ module TLearn
       results = run_tlearn.train(TrainingData.new(data), number_of_sweeps)
       
       if results
-        results.each{|r| @out.puts(r)}
+        results.each{|r| @out.puts(r.inspect)}
         results
       else
         @out.puts("[Error] Training failed") 
@@ -23,7 +23,7 @@ module TLearn
       run_tlearn = RunTLearn.new(@config)
 
       results = run_tlearn.fitness(FitnessData.new(data), number_of_sweeps)
-      results.each{|r| @out.puts(r)}
+      results.each{|r| @out.puts(r.inspect)}
       
       results[-1]
     end
