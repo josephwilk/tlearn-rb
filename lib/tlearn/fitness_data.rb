@@ -4,6 +4,10 @@ module TLearn
       @data = data
     end
     
+    def reset_points
+      [0, 2]
+    end
+    
     def data
       [@data]
     end
