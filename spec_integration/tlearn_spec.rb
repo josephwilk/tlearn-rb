@@ -18,28 +18,43 @@ describe "TLearn" do
   let(:number_of_sweeps){ 100 }
   
   it "should train the tlearn neural network" do
-    training_data = [{[1] * 77 => [1, 0, 0, 0, 0, 0]}],
-                    [{[0] * 77 => [0, 0, 0, 0, 0, 1]}]
+    training_data = [{[1] * 77 => [0, 0, 0, 0, 0, 1]}],
+                    [{[0] * 77 => [1, 0, 0, 0, 0, 0]}]
   
     tlearn = TLearn::Run.new(config, out)
     
     tlearn.train(training_data, number_of_sweeps)
   end
   
-  it "should used the trained neural network to evaluate the fitness of candidate inputs" do
-    test_subject_1 = [0] * 77
-    test_subject_2 = [1] * 77
+  describe "testing fitness using trained network" do
+    it "should rank 77 1s with a 6" do
+      test_subject = [1] * 77
   
-    tlearn = TLearn::Run.new(config, out)
+      tlearn = TLearn::Run.new(config, out)
   
-    rating_1 = tlearn.fitness(test_subject_1, number_of_sweeps)
-    rating_2 = tlearn.fitness(test_subject_2, number_of_sweeps)
+      rating = tlearn.fitness(test_subject, number_of_sweeps)
 
-    rank_1 = rating_1.rindex(rating_1.max) + 1
-    rank_2 = rating_2.rindex(rating_2.max) + 1
+      p rating
 
-    rank_1.should == 6
-    rank_2.should == 1
+      rank = rating.rindex(rating.max) + 1
+
+      rank.should == 6
+    end
+    
+    it "should rank 77 0s with a 1" do
+      test_subject = [0] * 77
+  
+      tlearn = TLearn::Run.new(config, out)
+  
+      rating = tlearn.fitness(test_subject, number_of_sweeps)
+
+      p rating
+
+      rank = rating.rindex(rating.max) + 1
+
+      rank.should == 1
+    
+    end
   end
 
 end
