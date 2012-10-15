@@ -15,7 +15,7 @@ describe "TLearn" do
   
   let(:out){ StringIO.new }
   
-  let(:number_of_sweeps){ 100 }
+  let(:number_of_sweeps){ 200 }
   
   it "should train the tlearn neural network" do
     training_data = [{[1] * 77 => [0, 0, 0, 0, 0, 1]}],
