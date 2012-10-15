@@ -5,17 +5,22 @@ module TLearn
     end
     
     def reset_points
-      @data_list.map{|data| data.length}
+      sum = 0
+      reset_times = @data_list.map do |data| 
+        sum = sum + data.length
+        sum
+      end
+      [sum, 0] + reset_times
     end
 
     def output_data
       @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.values[0] }}
     end
-    
+
     def data
       @data_list.reduce([]){|all_data, data| all_data + data.reduce([]){|data_list, data_hash| data_list << data_hash.keys[0] }}
     end
-
+    
     def no_of_data_values
       @data_list.map{|data| data.length}.reduce(&:+)
     end

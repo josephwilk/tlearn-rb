@@ -40,9 +40,19 @@ module TLearn
             
         training_data = TrainingData.new(training_data)
   
-        training_data.reset_points.should == [2, 1]
+        training_data.reset_points[1..-1].should == [0, 2, 3]
       end
-    
+
+      it "should list the number of times points as the first value" do
+        training_data =  [
+                           [{all_zeros => [1, 0, 0, 0, 0, 0]}, {all_zeros => [1, 0, 0, 0, 0, 0]}],
+                           [{all_ones  => [0, 0, 0, 0, 0, 1]}]
+                         ]
+
+        training_data = TrainingData.new(training_data)
+
+        training_data.reset_points[0].should == 3
+      end
     end
     
     describe '#no_of_data_values' do
