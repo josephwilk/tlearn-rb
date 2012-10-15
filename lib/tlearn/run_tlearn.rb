@@ -12,7 +12,7 @@ module TLearn
       @config = Config.new(config)
     end
   
-    def fitness(data, number_of_sweeps = Config::DEFAULT_NUMBER_OF_SWEEPS)
+    def fitness(data, number_of_sweeps = @config.number_of_sweeps)
       raise UntrainedError.new("Train me first!") unless network_trained?
       
       FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
@@ -25,7 +25,7 @@ module TLearn
       output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
     end
   
-    def train(training_data, number_of_sweeps = DEFAULT_NUMBER_OF_SWEEPS)
+    def train(training_data, number_of_sweeps = @config.number_of_sweeps)
       clear_previous_session
       
       @config.setup_config(training_data)

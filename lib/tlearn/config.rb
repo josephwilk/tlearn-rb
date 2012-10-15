@@ -24,6 +24,10 @@ module TLearn
       File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(training_data))}
       File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
+    
+    def number_of_sweeps
+      DEFAULT_NUMBER_OF_SWEEPS
+    end
 
     private   
 
