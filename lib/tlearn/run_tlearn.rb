@@ -1,5 +1,7 @@
 module TLearn
   class RunTLearn
+    class UntrainedError < Exception; end;
+    
     TLEARN_EXECUTABLE = '../bin/tlearn'
   
     EXTERNAL_RESET_FILE = '-X'
@@ -11,7 +13,7 @@ module TLearn
     end
   
     def fitness(data, number_of_sweeps = Config::DEFAULT_NUMBER_OF_SWEEPS)
-      raise "Train me first!" unless network_trained?
+      raise UntrainedError.new("Train me first!") unless network_trained?
       
       FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
 
