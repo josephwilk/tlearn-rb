@@ -5,7 +5,7 @@ module TLearn
     end
     
     def data
-      @data
+      [@data]
     end
 
     def no_of_data_values

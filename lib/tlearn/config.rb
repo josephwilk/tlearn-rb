@@ -59,15 +59,17 @@ EOS
       data_file = <<EOS
 distributed
 #{training_data.no_of_data_values}
-#{training_data.data.join("\n")}
+#{training_data.data.map{|d| d.join(" ")}.join("\n")}
 EOS
     end
 
     def build_teach_data(training_data)
+      debugger
+      
       teach_file = <<EOS
 distributed
 #{training_data.no_of_data_values}
-#{training_data.output_data.join("\n")}
+#{training_data.output_data.map{|d| d.join(" ")}.join("\n")}
 EOS
     end
   
