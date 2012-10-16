@@ -1,5 +1,9 @@
-require 'rubygems'
+require "bundler"
+Bundler.setup
+Bundler::GemHelper.install_tasks
+
 require 'rspec/core/rake_task'
+require 'rake/extensiontask'
 
 require File.dirname(__FILE__) + '/lib/tlearn'
 
@@ -57,5 +61,7 @@ RSpec::Core::RakeTask.new(:spec)
 RSpec::Core::RakeTask.new(:spec_integration) do |spec|
   spec.pattern = 'spec_integration/**/*_spec.rb'
 end
+
+Rake::ExtensionTask.new('tlearn')
 
 task :default => [:spec, :spec_integration]
