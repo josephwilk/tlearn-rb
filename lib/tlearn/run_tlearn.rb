@@ -46,6 +46,7 @@ module TLearn
 
     def clear_previous_fitness_session
       FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
+      FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.reset")
     end
 
     def clear_entire_training_data

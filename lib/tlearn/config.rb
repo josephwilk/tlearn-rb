@@ -17,11 +17,10 @@ module TLearn
 
     def setup_fitness_data(data)
       File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(data))}
-      #File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.reset", "w") {|f| f.write(build_reset_config(data))}
     end
 
     def setup_training_data(training_data)
-      #File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.reset", "w") {|f| f.write(build_reset_config(training_data))}
+      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.reset", "w") {|f| f.write(build_reset_config(training_data))}
       File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(training_data))}
       File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
