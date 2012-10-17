@@ -4,7 +4,6 @@ require 'mkmf'
 OPTIMIZE= '-O'		
 
 RbConfig::MAKEFILE_CONFIG['CC'] = 'gcc'
-RbConfig::MAKEFILE_CONFIG['DLEXT'] = 'so'
 
 $CFLAGS = "#{OPTIMIZE}"
 $LFLAGS= '-abcn -Dlint'
