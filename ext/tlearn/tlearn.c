@@ -14,7 +14,6 @@ optional "don't care" values) in a ".teach" file.  The network
 configuration is defined in a ".cf" file documented in tlearn.man.
 
 ------------------------------------------------------------------------*/
-#include <ruby.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -123,10 +122,11 @@ extern int save_wts();
 extern int act_nds();
 
 
-int run(argc,argv)
+main(argc,argv)
 	int	argc;
 	char  **argv;
 {
+
 	FILE	*fopen();
 	FILE	*fpid;
 	extern	char *optarg;
@@ -193,14 +193,7 @@ int run(argc,argv)
 	exp_init();
 #endif
 
-  root[0] = 0;
-
-  int count;
-  for (count = 1; count < argc; count++)
- 	{
- 	  printf("argv[%d]=%s\n", count, argv[count]);
- 	}
-
+	root[0] = 0;
 
 	while ((c = getopt(argc, argv, "f:hil:m:n:r:s:tC:E:ILM:PpRS:TU:VvXB:H:D:")) != EOF) {
 		switch (c) {
@@ -314,20 +307,20 @@ int run(argc,argv)
 			case 'h':
 			default:
 				usage();
-				return(2);
+				exit(2);
 			break;
 		}
 	}
 	if (nsweeps == 0){
 		perror("ERROR: No -s specified");
-		return(1);
+		exit(1);
 	}
 
 	/* open files */
 
 	if (root[0] == 0){
 		perror("ERROR: No fileroot specified");
-		return(1);
+		exit(1);
 	}
 
 	if (command){
@@ -335,7 +328,7 @@ int run(argc,argv)
 		cmdfp = fopen(cmdfile, "a");
 		if (cmdfp == NULL) {
 			perror("ERROR: Can't open .cmd file");
-			return(1);
+			exit(1);
 		}
 		for (i = 1; i < argc; i++)
 			fprintf(cmdfp,"%s ",argv[i]);
@@ -354,7 +347,7 @@ int run(argc,argv)
 	cfp = fopen(cfile, "r");
 	if (cfp == NULL) {
 		perror("ERROR: Can't open .cf file");
-		return(1);
+		exit(1);
 	}
 
 	get_nodes();
@@ -486,7 +479,7 @@ int run(argc,argv)
 	}
 	if (learning)
 		save_wts();
-	return(0);
+	exit(0);
 
 }
 
@@ -530,43 +523,3 @@ intr(sig)
 }
 
 
-/* -- Ruby interface -- */
-
-int do_print(VALUE key, VALUE val, VALUE in) {
-  fprintf(stderr, "Input data is %s\n", StringValueCStr(in));
-
-  fprintf(stderr, "Key %s=>Value %s\n", StringValueCStr(key),
-         StringValueCStr(val));
-
-  return ST_CONTINUE;
-}
-
-static VALUE tlearn_run(VALUE self, VALUE config) {
-  int	argc;
-  char *argv[5];
-  argc = 5;  
-
-  rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
-
-  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
-  VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
-  char *number_of_sweeps = StringValueCStr(sweeps_value);
-  char *file_root = StringValueCStr(file_root_value);
-
-  argv[0] = "tlearn";
-  argv[1] = "-s";
-  argv[2] = number_of_sweeps;
-  argv[3] = "-f";
-  argv[4] = file_root;
-  
-  int result = run(argc, argv);
-  return rb_int_new(result);
-}
-
-void Init_tlearn(void) {
-  VALUE klass = rb_define_class("TlearnExt",
-       rb_cObject);
-  
- rb_define_singleton_method(klass,
-     "run", tlearn_run, 1);
-}
