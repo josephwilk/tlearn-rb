@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe 'The TLearnExt C Extension' do
 
+  def tlearn_extension
+    File.exists?(File.dirname(__FILE__) + '/../lib/tlearn.so') ? 'tlearn.so' : 'tlearn.bundle'
+  end
+
   before(:all) do
-    require 'tlearn.so'
-    require 'tlearn.bundle'
+    require tlearn_extension
   end
 
   it "should not segfault" do
