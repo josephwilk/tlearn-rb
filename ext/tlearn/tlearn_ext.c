@@ -270,34 +270,6 @@ int run(argc,argv)
 			case 'B':
 				init_bias = atof(optarg);
 				break;
-#ifdef GRAPHICS
-			/*
-			 * graphics display; dsp_type:
-			 *	0 = no display (default)
-			 *	1 = weights only
-			 *	2 = activations only
-			 *	3 = weights & activations
-			 */
-			case 'D':
-				switch (optarg[0]) {
-					case 'f':
-						optarg++;
-						dsp_freq = atol(optarg);
-						break;
-					case 't':
-						optarg++;
-						dsp_type = atoi(optarg);
-						break;
-					case 'd':
-						dsp_delay = 1;
-						break;
-					case 'p':
-						optarg++;
-						dsp_print = atol(optarg);
-						break;
-				}
-				break;
-#endif GRAPHICS
 			/*
 			 * if == 1, use cross-entropy as error;
 			 * if == 2, also collect cross-entropy stats.
@@ -357,13 +329,6 @@ int run(argc,argv)
 	get_outputs();
 	get_connections();
 	get_special();
-#ifdef GRAPHICS
-	/*
-	 * graphics must be done after other files are opened
-	 */
-	if (dsp_type != 0)
-		init_dsp(root);
-#endif GRAPHICS
 	if (!seed)
 		seed = time((time_t *) NULL);
 	srandom(seed);
@@ -450,10 +415,6 @@ int run(argc,argv)
 			if (probe)
 				print_nodes(zold);
 		}
-#ifdef GRAPHICS
-		if ((dsp_type != 0) && (sweep%dsp_freq == 0))
-			do_dsp();
-#endif GRAPHICS
 		if (verify)
 			print_output(zold);
 
@@ -496,10 +457,6 @@ int do_print(VALUE key, VALUE val, VALUE in) {
   return ST_CONTINUE;
 }
 
-static VALUE tlearn_run(VALUE self, VALUE config) {
-  int	argc;
-  char *argv[5];
-  argc = 5;  
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
 
