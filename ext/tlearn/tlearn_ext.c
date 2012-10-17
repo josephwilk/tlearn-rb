@@ -105,12 +105,6 @@ extern int	localist;	/* flag for speed-up with localist inputs */
 extern int	randomly;	/* flag for presenting inputs in random order */
 extern int	limits;	/* flag for limited weights */
 extern int	ce;		/* flag for cross_entropy */
-#ifdef GRAPHICS
-extern int	dsp_type = 0;	/* flag for graphics display */
-extern int	dsp_freq = 0;	/* frequency of graphics display */
-extern int	dsp_delay = 0;	/* delay of graphics display */
-extern int	dsp_print = 0;	/* frequency of graphics hardcopy */
-#endif GRAPHICS
 
 extern char	root[128];	/* root filename for .cf, .data, .teach, etc.*/
 extern char	loadfile[128];	/* filename for weightfile to be read in */
