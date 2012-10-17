@@ -492,7 +492,7 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
   char *number_of_sweeps = StringValueCStr(sweeps_value);
   char *file_root        = StringValueCStr(file_root_value);
-  char weights[1000];
+  char weights[strlen(file_root) + strlen(".wts")];
 
   strcpy(weights, file_root);
 
