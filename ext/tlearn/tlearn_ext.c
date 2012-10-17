@@ -132,7 +132,6 @@ int run(argc,argv)
 	extern	float rans();
 	extern	time_t time();
 
-
 	long	nsweeps = 0;	/* number of sweeps to run for */
 	long	ttime = 0;	/* number of sweeps since time = 0 */
 	long	utime = 0;	/* number of sweeps since last update_weights */
@@ -506,7 +505,10 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
 void Init_tlearn(void) {
   VALUE klass = rb_define_class("TLearnExt",
        rb_cObject);
-  
+
  rb_define_singleton_method(klass,
-     "run", tlearn_run, 1);
+     "train", tlearn_train, 1);
+
+ rb_define_singleton_method(klass,
+     "fitness", tlearn_fitness, 1);
 }
