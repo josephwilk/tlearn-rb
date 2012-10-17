@@ -64,4 +64,4 @@ end
 
 Rake::ExtensionTask.new('tlearn')
 
-task :default => [:spec, :spec_integration]
+task :default => [:spec, :compile, :spec_integration]
