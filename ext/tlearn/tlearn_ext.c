@@ -519,7 +519,7 @@ static VALUE tlearn_run(VALUE self, VALUE config) {
 }
 
 void Init_tlearn(void) {
-  VALUE klass = rb_define_class("TlearnExt",
+  VALUE klass = rb_define_class("TLearnExt",
        rb_cObject);
   
  rb_define_singleton_method(klass,
