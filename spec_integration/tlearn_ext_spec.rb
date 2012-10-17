@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'The TLearnExt C Extension' do
 
   def tlearn_extension
-    if File.exists?(File.dirname(__FILE__) + '/../lib/tlearn/tlearn.so')
+    if File.exists?(File.dirname(__FILE__) + '/../lib/tlearn.so')
       'tlearn.so'
     else
       'tlearn.bundle'
