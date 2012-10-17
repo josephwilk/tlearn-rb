@@ -117,11 +117,15 @@ extern int load_wts();
 extern int save_wts();
 extern int act_nds();
 
+extern int optind;
 
 int run(argc,argv)
 	int	argc;
 	char  **argv;
 {
+  //Reset getopts
+  optind  = 1;
+
 	FILE	*fopen();
 	FILE	*fpid;
 	extern	char *optarg;
