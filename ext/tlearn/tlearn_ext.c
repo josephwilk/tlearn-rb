@@ -461,6 +461,9 @@ int do_print(VALUE key, VALUE val, VALUE in) {
   return ST_CONTINUE;
 }
 
+static VALUE tlearn_train(VALUE self, VALUE config) {
+  int	tlearn_args_count = 5;
+  char *tlearn_args[tlearn_args_count];
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
 
@@ -469,13 +472,34 @@ int do_print(VALUE key, VALUE val, VALUE in) {
   char *number_of_sweeps = StringValueCStr(sweeps_value);
   char *file_root        = StringValueCStr(file_root_value);
 
-  argv[0] = "tlearn";
-  argv[1] = "-s";
-  argv[2] = number_of_sweeps;
-  argv[3] = "-f";
-  argv[4] = file_root;
+  tlearn_args[0] = "tlearn_fitness";
+  tlearn_args[1] = "-s";
+  tlearn_args[2] = number_of_sweeps;
+  tlearn_args[3] = "-f";
+  tlearn_args[4] = file_root;
   
-  int result = run(argc, argv);
+  int result = run(tlearn_args_count, tlearn_args);
+  return rb_int_new(result);
+}
+
+static VALUE tlearn_fitness(VALUE self, VALUE config) {
+  int	tlearn_args_count = 5;
+  char *tlearn_args[tlearn_args_count];
+
+  rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
+
+  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
+  VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
+  char *number_of_sweeps = StringValueCStr(sweeps_value);
+  char *file_root        = StringValueCStr(file_root_value);
+
+  tlearn_args[0] = "tlearn_fitness";
+  tlearn_args[1] = "-s";
+  tlearn_args[2] = number_of_sweeps;
+  tlearn_args[3] = "-f";
+  tlearn_args[4] = file_root;
+  
+  int result = run(tlearn_args_count, tlearn_args);
   return rb_int_new(result);
 }
 
