@@ -461,7 +461,7 @@ int do_print(VALUE key, VALUE val, VALUE in) {
 }
 
 static VALUE tlearn_train(VALUE self, VALUE config) {
-  int	tlearn_args_count = 5;
+  int	tlearn_args_count = 6;
   char *tlearn_args[tlearn_args_count];
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
@@ -476,13 +476,14 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   tlearn_args[2] = number_of_sweeps;
   tlearn_args[3] = "-f";
   tlearn_args[4] = file_root;
+  tlearn_args[5] = "-L";
   
   int result = run(tlearn_args_count, tlearn_args);
   return rb_int_new(result);
 }
 
 static VALUE tlearn_fitness(VALUE self, VALUE config) {
-  int	tlearn_args_count = 5;
+  int	tlearn_args_count = 8;
   char *tlearn_args[tlearn_args_count];
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
@@ -491,12 +492,18 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
   char *number_of_sweeps = StringValueCStr(sweeps_value);
   char *file_root        = StringValueCStr(file_root_value);
+  char weights[1000];
+
+  strcpy(weights, file_root);
 
   tlearn_args[0] = "tlearn_fitness";
   tlearn_args[1] = "-s";
   tlearn_args[2] = number_of_sweeps;
   tlearn_args[3] = "-f";
   tlearn_args[4] = file_root;
+  tlearn_args[5] = "-l";
+  tlearn_args[6] = strcat(weights, ".wts");
+  tlearn_args[7] = "-V";
   
   int result = run(tlearn_args_count, tlearn_args);
   return rb_int_new(result);
