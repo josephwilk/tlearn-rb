@@ -130,6 +130,8 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
 {
   //Reset getopts
   optind  = 1;
+  sweep = 0;
+  tsweeps = 0;
 
   FILE  *fopen();
   FILE  *fpid;
