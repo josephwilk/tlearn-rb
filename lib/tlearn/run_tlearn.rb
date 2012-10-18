@@ -57,11 +57,11 @@ module TLearn
     end
     
     def training_successful?(number_of_sweeps)
-      File.exists?("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts")
+      File.exists?("#{file_root}.#{number_of_sweeps}.wts")
     end
 
     def network_trained?
-      File.exists?("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.wts")
+      File.exists?("#{file_root}.wts")
     end
     
     def execute_tlearn_fitness(number_of_sweeps)
@@ -76,7 +76,11 @@ module TLearn
     end
   
     def execute_tlearn_train(number_of_sweeps)
-      `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
+      if(USE_EXTENSION)
+        TLearnExt.train({'sweeps' => number_of_sweeps, 'file_root' => file_root})
+      else
+        `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
+      end
     end
 
   end
