@@ -194,13 +194,6 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
 #endif
 
   root[0] = 0;
-
-  int count;
-  for (count = 1; count < argc; count++)
-   {
-     printf("argv[%d]=%s\n", count, argv[count]);
-   }
-   
   strcpy(root, file_path);
 
   while ((c = getopt(argc, argv, "f:hil:m:n:r:s:tC:E:ILM:PpRS:TU:VvXB:H:D:")) != EOF) {
@@ -419,7 +412,7 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
         current_weights_output[i] = zold[ni+outputs[i]];
       }
 
-      print_output(zold);
+      //print_output(zold);
     }
     if (rms_report && (++rtime >= rms_report)){
       rtime = 0;
