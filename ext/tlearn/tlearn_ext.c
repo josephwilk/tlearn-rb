@@ -119,10 +119,11 @@ extern int act_nds();
 
 extern int optind;
 
-int run(argc,argv, nsweeps, current_weights_output)
+int run(argc,argv, nsweeps, file_path, current_weights_output)
   int  argc;
   char  **argv;
   long nsweeps;
+  char *file_path;
   float *current_weights_output;
 {
   //Reset getopts
@@ -199,16 +200,14 @@ int run(argc,argv, nsweeps, current_weights_output)
    {
      printf("argv[%d]=%s\n", count, argv[count]);
    }
-
+   
+  strcpy(root, file_path);
 
   while ((c = getopt(argc, argv, "f:hil:m:n:r:s:tC:E:ILM:PpRS:TU:VvXB:H:D:")) != EOF) {
     switch (c) {
       case 'C':
         check = (long) atol(optarg);
         ctime = check;
-        break;
-      case 'f':
-        strcpy(root,optarg);
         break;
       case 'i':
         command = 0;
@@ -463,7 +462,7 @@ int do_print(VALUE key, VALUE val, VALUE in) {
 }
 
 static VALUE tlearn_train(VALUE self, VALUE config) {
-  int  tlearn_args_count = 4;
+  int  tlearn_args_count = 2;
   char *tlearn_args[tlearn_args_count];
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
@@ -476,17 +475,15 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
 
   float current_weights_output[6];
 
-  tlearn_args[0] = "tlearn_fitness";
-  tlearn_args[1] = "-f";
-  tlearn_args[2] = file_root;
-  tlearn_args[3] = "-L";
+  tlearn_args[1] = "tlearn_fitness";
+  tlearn_args[2] = "-L";
   
-  int result = run(tlearn_args_count, tlearn_args, nsweeps, current_weights_output);
+  int result = run(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
   return rb_int_new(result);
 }
 
 static VALUE tlearn_fitness(VALUE self, VALUE config) {
-  int  tlearn_args_count = 6;
+  int  tlearn_args_count = 4;
   char *tlearn_args[tlearn_args_count];
 
   VALUE ruby_array       = rb_ary_new();
@@ -503,15 +500,13 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   strcpy(weights, file_root);
 
   tlearn_args[0] = "tlearn_fitness";
-  tlearn_args[1] = "-f";
-  tlearn_args[2] = file_root;
-  tlearn_args[3] = "-l";
-  tlearn_args[4] = strcat(weights, ".wts");
-  tlearn_args[5] = "-V";
+  tlearn_args[1] = "-l";
+  tlearn_args[2] = strcat(weights, ".wts");
+  tlearn_args[3] = "-V";
 
   float current_weights_output[6];
 
-  int failure = run(tlearn_args_count, tlearn_args, nsweeps, current_weights_output);
+  int failure = run(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
 
   if(failure == 0){
     float weight;
