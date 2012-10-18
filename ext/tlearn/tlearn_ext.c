@@ -119,9 +119,10 @@ extern int act_nds();
 
 extern int optind;
 
-int run(argc,argv, current_weights_output)
+int run(argc,argv, nsweeps, current_weights_output)
   int  argc;
   char  **argv;
+  long nsweeps;
   float *current_weights_output;
 {
   //Reset getopts
@@ -133,7 +134,6 @@ int run(argc,argv, current_weights_output)
   extern  float rans();
   extern  time_t time();
 
-  long  nsweeps = 0;  /* number of sweeps to run for */
   long  ttime = 0;  /* number of sweeps since time = 0 */
   long  utime = 0;  /* number of sweeps since last update_weights */
   long  tmax = 0;  /* maximum number of sweeps (given in .data) */
@@ -231,9 +231,6 @@ int run(argc,argv, current_weights_output)
         break;
       case 'r':
         rate = (double) atof(optarg);
-        break;
-      case 's':
-        nsweeps = (long) atol(optarg);
         break;
       case 't':
         teacher = 1;
@@ -466,59 +463,55 @@ int do_print(VALUE key, VALUE val, VALUE in) {
 }
 
 static VALUE tlearn_train(VALUE self, VALUE config) {
-  int  tlearn_args_count = 6;
+  int  tlearn_args_count = 4;
   char *tlearn_args[tlearn_args_count];
 
   rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
 
   VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
+  long nsweeps = NUM2DBL(sweeps_value);
+
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
-  char *number_of_sweeps = StringValueCStr(sweeps_value);
   char *file_root        = StringValueCStr(file_root_value);
 
   float current_weights_output[6];
 
   tlearn_args[0] = "tlearn_fitness";
-  tlearn_args[1] = "-s";
-  tlearn_args[2] = number_of_sweeps;
-  tlearn_args[3] = "-f";
-  tlearn_args[4] = file_root;
-  tlearn_args[5] = "-L";
+  tlearn_args[1] = "-f";
+  tlearn_args[2] = file_root;
+  tlearn_args[3] = "-L";
   
-  int result = run(tlearn_args_count, tlearn_args, current_weights_output);
+  int result = run(tlearn_args_count, tlearn_args, nsweeps, current_weights_output);
   return rb_int_new(result);
 }
 
 static VALUE tlearn_fitness(VALUE self, VALUE config) {
-  int  tlearn_args_count = 8;
+  int  tlearn_args_count = 6;
   char *tlearn_args[tlearn_args_count];
 
   VALUE ruby_array       = rb_ary_new();
-  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
 
-  char *number_of_sweeps = StringValueCStr(sweeps_value);
+  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
+  long nsweeps = NUM2DBL(sweeps_value);
+
   char *file_root        = StringValueCStr(file_root_value);
   char weights[strlen(file_root) + strlen(".wts")];
 
   float *result_weights; 
 
-  //rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
-
   strcpy(weights, file_root);
 
   tlearn_args[0] = "tlearn_fitness";
-  tlearn_args[1] = "-s";
-  tlearn_args[2] = number_of_sweeps;
-  tlearn_args[3] = "-f";
-  tlearn_args[4] = file_root;
-  tlearn_args[5] = "-l";
-  tlearn_args[6] = strcat(weights, ".wts");
-  tlearn_args[7] = "-V";
+  tlearn_args[1] = "-f";
+  tlearn_args[2] = file_root;
+  tlearn_args[3] = "-l";
+  tlearn_args[4] = strcat(weights, ".wts");
+  tlearn_args[5] = "-V";
 
   float current_weights_output[6];
 
-  int failure = run(tlearn_args_count, tlearn_args, current_weights_output);
+  int failure = run(tlearn_args_count, tlearn_args, nsweeps, current_weights_output);
 
   if(failure == 0){
     float weight;
