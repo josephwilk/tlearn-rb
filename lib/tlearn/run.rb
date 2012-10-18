@@ -22,10 +22,7 @@ module TLearn
     def fitness(data, number_of_sweeps = nil)
       run_tlearn = RunTLearn.new(@config)
 
-      results = run_tlearn.fitness(FitnessData.new(data), number_of_sweeps)
-      results.each{|r| @out.puts(r.inspect)}
-      
-      results[-1]
+      run_tlearn.fitness(FitnessData.new(data), number_of_sweeps)
     end
   
   end
