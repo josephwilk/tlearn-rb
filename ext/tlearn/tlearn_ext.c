@@ -69,42 +69,44 @@ extern struct  nf {
  };
 
 extern struct  cf  **cinfo;  /* (nn x nt) connection info */
-extern struct  nf  *ninfo;    /* (nn) node activation function info */
+extern struct  nf  *ninfo;   /* (nn) node activation function info */
 
-extern int  *outputs;  /* (no) indices of output nodes */
+extern int  *outputs;    /* (no) indices of output nodes */
 
-extern int  *selects;  /* (nn+1) nodes selected for probe printout */
-extern int  *linput;  /* (ni) localist input array */
+extern int  *selects;    /* (nn+1) nodes selected for probe printout */
+extern int  *linput;     /* (ni) localist input array */
 
-extern float  *znew;    /* (nt) inputs and activations at time t+1 */
-extern float  *zold;    /* (nt) inputs and activations at time t */
-extern float  *zmem;    /* (nt) inputs and activations at time t */
-extern float  **wt;    /* (nn x nt) weight TO node i FROM node j*/ 
-extern float  **dwt;    /* (nn x nt) delta weight at time t */
+extern float  *znew;     /* (nt) inputs and activations at time t+1 */
+extern float  *zold;     /* (nt) inputs and activations at time t */
+extern float  *zmem;     /* (nt) inputs and activations at time t */
+extern float  **wt;      /* (nn x nt) weight TO node i FROM node j*/ 
+extern float  **dwt;     /* (nn x nt) delta weight at time t */
 extern float  **winc;    /* (nn x nt) accumulated weight increment*/
-extern float  *target;  /* (no) output target values */
+extern float  *target;   /* (no) output target values */
 extern float  *error;    /* (nn) error = (output - target) values */
-extern float  ***pnew;  /* (nn x nt x nn) p-variable at time t+1 */
-extern float  ***pold;  /* (nn x nt x nn) p-variable at time t */
+extern float  ***pnew;   /* (nn x nt x nn) p-variable at time t+1 */
+extern float  ***pold;   /* (nn x nt x nn) p-variable at time t */
 
-extern float  rate;  /* learning rate */
-extern float  momentum;  /* momentum */
-extern float  weight_limit;  /* bound for random weight init */
-extern float  criterion;  /* exit program when rms error is less than this */
-extern float  init_bias;  /* possible offset for initial output biases */
+extern float  rate;         /* learning rate */
+extern float  momentum;     /* momentum */
+extern float  weight_limit; /* bound for random weight init */
+extern float  criterion;    /* exit program when rms error is less than this */
+extern float  init_bias;    /* possible offset for initial output biases */
 
-extern long  sweep;  /* current sweep */
-extern long  tsweeps;  /* total sweeps to date */
+extern float	*data;        /* Required to reset the .data file */
+
+extern long  sweep;       /* current sweep */
+extern long  tsweeps;     /* total sweeps to date */
 extern long  rms_report;  /* output rms error every "report" sweeps */
 
-extern int  ngroups;  /* number of groups */
+extern int  ngroups;   /* number of groups */
 
 extern int  backprop;  /* flag for standard back propagation (the default) */
-extern int  teacher;  /* flag for feeding back targets */
+extern int  teacher;   /* flag for feeding back targets */
 extern int  localist;  /* flag for speed-up with localist inputs */
 extern int  randomly;  /* flag for presenting inputs in random order */
-extern int  limits;  /* flag for limited weights */
-extern int  ce;    /* flag for cross_entropy */
+extern int  limits;    /* flag for limited weights */
+extern int  ce;        /* flag for cross_entropy */
 
 extern char  root[128];  /* root filename for .cf, .data, .teach, etc.*/
 extern char  loadfile[128];  /* filename for weightfile to be read in */
@@ -322,6 +324,7 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
   get_outputs();
   get_connections();
   get_special();
+  
   if (!seed)
     seed = time((time_t *) NULL);
   srandom(seed);
@@ -375,6 +378,8 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
       }
     }
   }
+
+  data = 0;
 
   nsweeps += tsweeps;
   for (sweep = tsweeps; sweep < nsweeps; sweep++){
@@ -458,10 +463,10 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   int  tlearn_args_count = 2;
   char *tlearn_args[tlearn_args_count];
 
-  rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
+  //rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
 
-  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
-  long nsweeps = NUM2DBL(sweeps_value);
+  VALUE sweeps_value = rb_hash_aref(config, rb_str_new2("sweeps"));
+  long nsweeps       = NUM2DBL(sweeps_value);
 
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
   char *file_root        = StringValueCStr(file_root_value);
@@ -482,8 +487,8 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   VALUE ruby_array       = rb_ary_new();
   VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
 
-  VALUE sweeps_value     = rb_hash_aref(config, rb_str_new2("sweeps"));
-  long nsweeps = NUM2DBL(sweeps_value);
+  VALUE sweeps_value = rb_hash_aref(config, rb_str_new2("sweeps"));
+  long nsweeps       = NUM2DBL(sweeps_value);
 
   char *file_root        = StringValueCStr(file_root_value);
   char weights[strlen(file_root) + strlen(".wts")];

@@ -53,6 +53,7 @@ extern	int	limits;		/* flag for limited weights */
 long	dc = 0;
 int	*ldata = 0;
 
+float	*data = 0;
 
 update_inputs(aold,tick,flag,maxtime,local)
 	float	*aold;
@@ -71,8 +72,6 @@ update_inputs(aold,tick,flag,maxtime,local)
 
 	static	long	dn;
 	static	long	ds;
-
-	static	float	*data = 0;
 
 	int	*idata;
 	int	*id;
