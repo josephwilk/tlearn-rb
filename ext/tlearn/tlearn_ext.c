@@ -119,11 +119,10 @@ extern int act_nds();
 
 extern int optind;
 
-float  current_weights_output[6];
-
-float *run(argc,argv)
+int run(argc,argv, current_weights_output)
   int  argc;
   char  **argv;
+  float *current_weights_output;
 {
   //Reset getopts
   optind  = 1;
@@ -451,12 +450,7 @@ float *run(argc,argv)
   if (learning)
     save_wts();
   
-  if(verify){
-    return(current_weights_output);
-  }
-  else{  
-    return(0);
-  }
+  return(0);
 
 }
 
@@ -482,6 +476,8 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   char *number_of_sweeps = StringValueCStr(sweeps_value);
   char *file_root        = StringValueCStr(file_root_value);
 
+  float current_weights_output[6];
+
   tlearn_args[0] = "tlearn_fitness";
   tlearn_args[1] = "-s";
   tlearn_args[2] = number_of_sweeps;
@@ -489,7 +485,7 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   tlearn_args[4] = file_root;
   tlearn_args[5] = "-L";
   
-  int result = run(tlearn_args_count, tlearn_args);
+  int result = run(tlearn_args_count, tlearn_args, current_weights_output);
   return rb_int_new(result);
 }
 
@@ -506,7 +502,6 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   char weights[strlen(file_root) + strlen(".wts")];
 
   float *result_weights; 
-  int result_index;
 
   //rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
 
@@ -521,15 +516,22 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   tlearn_args[6] = strcat(weights, ".wts");
   tlearn_args[7] = "-V";
 
-  result_weights = run(tlearn_args_count, tlearn_args);
+  float current_weights_output[6];
 
-  float weight;
-  for(result_index = 0; result_index < sizeof(result_weights)-2; result_index++){
-    weight = result_weights[result_index];
-    rb_ary_store(ruby_array, result_index, rb_float_new(weight));
+  int failure = run(tlearn_args_count, tlearn_args, current_weights_output);
+
+  if(failure == 0){
+    float weight;
+    int result_index;
+    for(result_index = 0; result_index < 6; result_index++){
+      weight = current_weights_output[result_index];
+      rb_ary_store(ruby_array, result_index, rb_float_new(weight));
+    }
+    return(ruby_array);
   }
-
-  return(ruby_array);
+  else{
+    return(rb_int_new(failure));
+  }
 }
 
 void Init_tlearn(void) {
