@@ -1,17 +1,20 @@
-require 'spec_helper'
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe 'TLearnExt' do
+  let(:out){ StringIO.new }
+  let(:number_of_sweeps){ 200 }
 
-  def tlearn_extension
-    File.exists?(File.dirname(__FILE__) + '/../lib/tlearn.so') ? 'tlearn.so' : 'tlearn.bundle'
+  before(:all) do
+    training_data = [{[1] * 77 => [0, 0, 0, 0, 0, 1]}],
+                    [{[0] * 77 => [1, 0, 0, 0, 0, 0]}]
+
+    tlearn = TLearn::Run.new(example_config, out)
+
+    tlearn.train(training_data, number_of_sweeps)
   end
 
   def example_file_root
     File.expand_path(File.dirname(__FILE__) + '/../data')  + '/evaluator'
-  end
-
-  before(:all) do
-    require tlearn_extension
   end
 
   it "should not segfault" do
