@@ -1,6 +1,8 @@
 module TLearn
   class RunTLearn
     class UntrainedError < Exception; end;
+
+    USE_EXTENSION = true
     
     TLEARN_EXECUTABLE = '../bin/tlearn'
   
@@ -18,11 +20,8 @@ module TLearn
       clear_previous_fitness_session
 
       @config.setup_fitness_data(data)
-        
+
       execute_tlearn_fitness(number_of_sweeps)
-    
-      output = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
-      output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}
     end
   
     def train(training_data, number_of_sweeps = @config.number_of_sweeps)
@@ -43,6 +42,10 @@ module TLearn
     end
     
     private
+    
+    def file_root
+      "#{File.expand_path(Config::WORKING_DIR)}/#{Config::TLEARN_NAMESPACE}"
+    end
 
     def clear_previous_fitness_session
       FileUtils.rm_f("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
@@ -52,7 +55,7 @@ module TLearn
     def clear_entire_training_data
       FileUtils.rm_f(Dir.glob("#{Config::WORKING_DIR}/*"))
     end
-
+    
     def training_successful?(number_of_sweeps)
       File.exists?("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts")
     end
@@ -60,13 +63,18 @@ module TLearn
     def network_trained?
       File.exists?("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.wts")
     end
-  
+    
     def execute_tlearn_fitness(number_of_sweeps)
-      `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP}`
-      
-      `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP} > evaluator.output`
+      if(USE_EXTENSION)
+        TLearnExt.fitness({'sweeps' => number_of_sweeps, 'file_root' => file_root})
+      else
+        `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP} > evaluator.output`
+        
+        output = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
+        output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}[-1]
+      end
     end
-
+  
     def execute_tlearn_train(number_of_sweeps)
       `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
     end
