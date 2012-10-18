@@ -35,6 +35,10 @@ describe 'TLearnExt' do
 
   describe ".fitness" do
     context "with a valid file root" do
+      it "should not return a status " do
+        TLearnExt.fitness({'sweeps' => '1', 'file_root' => example_file_root}).should_not == 1 
+      end
+      
       it "should return a final set of iterated weights" do
         TLearnExt.fitness({'sweeps' => '1', 'file_root' => example_file_root}).should have(6).weights 
       end
