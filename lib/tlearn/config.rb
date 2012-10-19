@@ -12,17 +12,17 @@ module TLearn
     end
 
     def setup_config(training_data)
-      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.cf",    "w") {|f| f.write(evaulator_config(training_data))}
+      File.open("#{file_root}.cf",    "w") {|f| f.write(evaulator_config(training_data))}
     end
 
     def setup_fitness_data(data)
-      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(data))}
+      File.open("#{file_root}.data",  "w") {|f| f.write(build_data(data))}
     end
 
     def setup_training_data(training_data)
-      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.reset", "w") {|f| f.write(build_reset_config(training_data))}
-      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.data",  "w") {|f| f.write(build_data(training_data))}
-      File.open("#{WORKING_DIR}/#{TLEARN_NAMESPACE}.teach", "w") {|f| f.write(build_teach_data(training_data))}
+      File.open("#{file_root}.reset", "w") {|f| f.write(build_reset_config(training_data))}
+      File.open("#{file_root}.data",  "w") {|f| f.write(build_data(training_data))}
+      File.open("#{file_root}.teach", "w") {|f| f.write(build_teach_data(training_data))}
     end
     
     def number_of_sweeps
@@ -30,6 +30,9 @@ module TLearn
     end
 
     private   
+    def file_root
+      "#{WORKING_DIR}/#{TLEARN_NAMESPACE}"
+    end
 
     def evaulator_config(training_data)
       nodes_config = {
