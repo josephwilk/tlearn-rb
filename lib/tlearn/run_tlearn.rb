@@ -1,14 +1,6 @@
 module TLearn
   class RunTLearn
     class UntrainedError < Exception; end;
-
-    USE_EXTENSION = true
-    
-    TLEARN_EXECUTABLE = '../bin/tlearn'
-  
-    EXTERNAL_RESET_FILE = '-X'
-    VERIFY_OUTPUTS_ON_EACH_SWEEP = '-V'
-    USE_RTRL_TEMPORALLY_RECURRENT_LEARNING = '-L'
   
     def initialize(config = {})
       @config = Config.new(config)
@@ -65,22 +57,11 @@ module TLearn
     end
     
     def execute_tlearn_fitness(number_of_sweeps)
-      if(USE_EXTENSION)
-        TLearnExt.fitness({'sweeps' => number_of_sweeps, 'file_root' => file_root})
-      else
-        `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} -l evaluator.wts -s #{number_of_sweeps} #{VERIFY_OUTPUTS_ON_EACH_SWEEP} > evaluator.output`
-        
-        output = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.output")
-        output.split("\n").map{|line| line.split("\t").map{|number| number.strip}}[-1]
-      end
+      TLearnExt.fitness({'sweeps' => number_of_sweeps, 'file_root' => file_root})
     end
   
     def execute_tlearn_train(number_of_sweeps)
-      if(USE_EXTENSION)
-        TLearnExt.train({'sweeps' => number_of_sweeps, 'file_root' => file_root})
-      else
-        `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
-      end
+      TLearnExt.train({'sweeps' => number_of_sweeps, 'file_root' => file_root})
     end
 
   end

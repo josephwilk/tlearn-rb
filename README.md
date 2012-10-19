@@ -21,7 +21,7 @@ While there have been attempts to add recurrent networks to FANN (http://leeniss
 Installing TLearn
 =========
 
-<pre><code>rake install</code></pre>
+<pre><code>bundle install tlearn</code></pre>
 
 Usage
 =========

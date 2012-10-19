@@ -59,18 +59,6 @@ if tlearn_extension_present?
     end
   end
 
-  task :install do
-    `mkdir -p tmp`
-    `cd tmp && wget --quiet ftp://ftp.crl.ucsd.edu/pub/neuralnets/tlearn_src/tlearn_unix.tar.gz && tar -xf tlearn_unix.tar.gz`
-  
-    make = File.read('tmp/tlearn/Makefile')
-    make.gsub!('EXP=-DEXP_TABLE=\"$(EXP_LOC)\"', '#EXP=-DEXP_TABLE=\"$(EXP_LOC)\"')
-    make.gsub!('EXP_LOC=/usr/local/lib/exp/exp_table', '#EXP_LOC=/usr/local/lib/exp/exp_table')
-    File.open('tmp/tlearn/Makefile', 'w'){|f| f.write(make)}
-  
-    `cd tmp/tlearn && make > /dev/null 2>&1 && cp tlearn ../../bin/`
-    `rm -rf tmp/tlearn`
-  end
 end
 
 task :default => [:compile, :spec, :spec_integration]
