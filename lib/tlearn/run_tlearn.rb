@@ -57,11 +57,11 @@ module TLearn
     end
     
     def execute_tlearn_fitness(number_of_sweeps)
-      TLearnExt.fitness({'sweeps' => number_of_sweeps, 'file_root' => file_root})
+      TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => file_root})
     end
   
     def execute_tlearn_train(number_of_sweeps)
-      TLearnExt.train({'sweeps' => number_of_sweeps, 'file_root' => file_root})
+      TLearnExt.train({:sweeps => number_of_sweeps, :file_root => file_root})
     end
 
   end

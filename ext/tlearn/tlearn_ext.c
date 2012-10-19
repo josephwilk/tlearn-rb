@@ -504,10 +504,10 @@ int do_print(VALUE key, VALUE val, VALUE in) {
 }
 
 static VALUE tlearn_train(VALUE self, VALUE config) {
-  VALUE sweeps_value = rb_hash_aref(config, rb_str_new2("sweeps"));
+  VALUE sweeps_value = rb_hash_aref(config, ID2SYM(rb_intern("sweeps")));
   long nsweeps       = NUM2DBL(sweeps_value);
 
-  VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
+  VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
   char *file_root        = StringValueCStr(file_root_value);
 
   float current_weights_output[6];
@@ -520,10 +520,13 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   int  tlearn_args_count = 4;
   char *tlearn_args[tlearn_args_count];
 
-  VALUE ruby_array       = rb_ary_new();
-  VALUE file_root_value  = rb_hash_aref(config, rb_str_new2("file_root"));
 
-  VALUE sweeps_value = rb_hash_aref(config, rb_str_new2("sweeps"));
+
+
+  VALUE ruby_array       = rb_ary_new();
+  VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
+
+  VALUE sweeps_value = rb_hash_aref(config, ID2SYM(rb_intern("sweeps")));
   long nsweeps       = NUM2DBL(sweeps_value);
 
   char *file_root        = StringValueCStr(file_root_value);
