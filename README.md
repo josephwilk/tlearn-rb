@@ -44,9 +44,9 @@ tlearn = TLearn.new(neural_network_config)
 training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
                 [{[1] * 77 => [0, 0, 0, 0, 0, 1]}]
   
-tlearn.train(training_data)
+tlearn.train(training_data, sweeps = 200)
 
-tlearn.fitness([0] * 77)
+tlearn.fitness([0] * 77, sweeps = 200)
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
 ```
 
