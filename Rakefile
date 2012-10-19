@@ -13,7 +13,7 @@ RSpec::Core::RakeTask.new(:spec_integration) do |spec|
 end
 
 def tlearn_extension_present?
-  File.exists?(File.dirname(__FILE__) + '/tlearn.so') || File.exists?(File.dirname(__FILE__) + '/tlearn.bundle')
+  File.exists?(File.dirname(__FILE__) + '/lib/tlearn.so') || File.exists?(File.dirname(__FILE__) + '/lib/tlearn.bundle')
 end
 
 if tlearn_extension_present?
