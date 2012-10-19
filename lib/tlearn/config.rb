@@ -29,9 +29,14 @@ module TLearn
       DEFAULT_NUMBER_OF_SWEEPS
     end
 
-    private   
     def file_root
       "#{WORKING_DIR}/#{TLEARN_NAMESPACE}"
+    end
+
+    private
+
+    def connections_ranges_to_strings(connections_config)
+      connections_config.map{|hash| {hash.keys[0].to_s.gsub('..','-') => hash.values[0]}}
     end
 
     def evaulator_config(training_data)
@@ -41,7 +46,9 @@ module TLearn
         :outputs => training_data.no_of_outputs,
         :output_nodes => '41-46'
       }
-  
+
+      @connections_config = connections_ranges_to_strings(@connections_config)
+
       output_nodes = nodes_config.delete(:output_nodes)
       node_config_strings = nodes_config.map{|key,value| "#{key.to_s.gsub('_',' ')} = #{value}" }
       node_config_strings << "output nodes are #{output_nodes}"

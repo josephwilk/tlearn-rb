@@ -21,12 +21,12 @@ if tlearn_extension_present?
   namespace :example do
         require File.dirname(__FILE__) + '/lib/tlearn'
 
-    neural_network_config = {:nodes       => {:nodes => 86},
-                             :connections => [{'1-81' => '0'},
-                                              {'1-40' => 'i1-i77'},
-                                              {'41-46' => '1-40'},
-                                              {'1-40' =>  '47-86'},
-                                              {'47-86' => ' 1-40 = 1. & 1. fixed one-to-one'}],
+    neural_network_config = {:nodes       => {:nodes  => 86},
+                             :connections => [{1..81  => '0'},
+                                              {1..40  => 'i1-i77'},
+                                              {41..46 => '1-40'},
+                                              {1..40  =>  '47-86'},
+                                              {47..86 => ' 1-40 = 1. & 1. fixed one-to-one'}],
                              :special     => {:linear => '47-86',
                                               :weight_limit => '1.00',
                                               :selected => '1-86'}}
