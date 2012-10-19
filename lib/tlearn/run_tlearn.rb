@@ -76,8 +76,7 @@ module TLearn
     end
   
     def execute_tlearn_train(number_of_sweeps)
-      #TODO: Training is not behaving as expected
-      if(false)
+      if(USE_EXTENSION)
         TLearnExt.train({'sweeps' => number_of_sweeps, 'file_root' => file_root})
       else
         `cd #{Config::WORKING_DIR} && #{TLEARN_EXECUTABLE} -f #{Config::TLEARN_NAMESPACE} #{USE_RTRL_TEMPORALLY_RECURRENT_LEARNING} -s #{number_of_sweeps}`
