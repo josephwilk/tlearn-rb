@@ -7,8 +7,8 @@ Ruby helping make tlearn neural network simulator sane(ish) (http://crl.ucsd.edu
 
 To see an example run:
 
-<pre><code>rake train
-rake fitness
+<pre><code>rake example:train
+rake example:fitness
 </code></pre>
 
 Seriously? Just use FANN!
