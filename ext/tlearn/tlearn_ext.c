@@ -121,17 +121,62 @@ extern int act_nds();
 
 extern int optind;
 
-int run(argc,argv, nsweeps, file_path, current_weights_output)
+
+int run_training(nsweeps, file_path, current_weights_output)
+  long nsweeps;
+  char *file_path;
+  float *current_weights_output;
+{
+  int  argc = 1;
+  char *argv[argc];
+  argv[0] = 'tlearn';
+  int status;
+
+  backprop = 0;
+  status = run(argc,argv, nsweeps, file_path, backprop, current_weights_output);
+
+  return(status);
+}
+
+int run_fitness(argc,argv, nsweeps, file_path, current_weights_output)
   int  argc;
   char  **argv;
   long nsweeps;
   char *file_path;
   float *current_weights_output;
 {
+  int status;
+  backprop = 1;
+  status = run(argc,argv, nsweeps, file_path, backprop, current_weights_output);
+
+  return(status);
+}
+
+int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
+  int  argc;
+  char  **argv;
+  long nsweeps;
+  char *file_path;
+  int backprop;
+  float *current_weights_output;
+{
   //Reset getopts
   optind  = 1;
   sweep = 0;
   tsweeps = 0;
+  rate = .1;
+  momentum = 0.;
+  weight_limit = 1.;
+  criterion = 0.;
+  init_bias = 0.;
+  rms_report = 0;
+  ngroups = 0;
+
+  teacher = 0;
+  localist = 0;
+  randomly = 0;
+  limits = 0;
+  ce = 0;
 
   FILE  *fopen();
   FILE  *fpid;
@@ -230,9 +275,6 @@ int run(argc,argv, nsweeps, file_path, current_weights_output)
         break;
       case 't':
         teacher = 1;
-        break;
-      case 'L':
-        backprop = 0;
         break;
       case 'V':
         learning = 0;
@@ -462,11 +504,6 @@ int do_print(VALUE key, VALUE val, VALUE in) {
 }
 
 static VALUE tlearn_train(VALUE self, VALUE config) {
-  int  tlearn_args_count = 2;
-  char *tlearn_args[tlearn_args_count];
-
-  //rb_hash_foreach(config, do_print, rb_str_new2("passthrough"));
-
   VALUE sweeps_value = rb_hash_aref(config, rb_str_new2("sweeps"));
   long nsweeps       = NUM2DBL(sweeps_value);
 
@@ -474,11 +511,8 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   char *file_root        = StringValueCStr(file_root_value);
 
   float current_weights_output[6];
-
-  tlearn_args[1] = "tlearn_fitness";
-  tlearn_args[2] = "-L";
   
-  int result = run(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
+  int result = run_training(nsweeps, file_root, current_weights_output);
   return rb_int_new(result);
 }
 
@@ -506,7 +540,7 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
 
   float current_weights_output[6];
 
-  int failure = run(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
+  int failure = run_fitness(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
 
   if(failure == 0){
     float weight;
