@@ -11,12 +11,14 @@ module TLearn
     end
     
     let(:settings){
-      { :nodes       => {:number_of_nodes => 9999,
+      {:nodes       => {:number_of_nodes => 9999,
                          :output_nodes    => '41-46'},
-        :connections => [{1..81   => '0'},
+       :connections => [{1..81   => '0'},
                          {1..40   => 'i1-i77'},
                          {1..40   =>  '47-86'},
-                         {47..86  => ' 1-40 = 1. & 1. fixed one-to-one'}]}
+                         {47..86  => ' 1-40 = 1. & 1. fixed one-to-one'}],
+       :special => {:weight_limit => 1.0}
+      }
     }
     
     let(:training_data){
@@ -28,27 +30,27 @@ module TLearn
     end
     
     describe "generating *.cf file" do
-      it "should set number of nodes" do
+      before(:each) do
         @config.setup_config(training_data)
+      end
 
+      it "should contain weight limit" do
+        config_file.should include "weight_limit = 1.0"
+      end
+
+      it "should contain the number of nodes" do
         config_file.should include "9999"
       end
 
-      it "should set output nodes" do
-        @config.setup_config(training_data)
-
+      it "should contain the output nodes" do
         config_file.should include "41-46"
       end
 
-      it "should convert ranges to strings" do 
-        @config.setup_config(training_data)
-        
+      it "should convert all config ranges to strings" do 
         config_file.should include "1-81"
       end
       
       it "should allow multiple values for a single range" do
-        @config.setup_config(training_data)
-        
         config_file.scan(/^1-40/).should == ["1-40", "1-40"]
       end
     end

@@ -12,7 +12,7 @@ def example_config
                                      {1..40   =>  '47-86'},
                                      {47..86  => ' 1-40 = 1. & 1. fixed one-to-one'}],
                     :special      => {:linear => '47-86',
-                    :weight_limit => '1.00',
+                    :weight_limit => 1.00,
                     :selected     => '1-86'}}
 end
 
