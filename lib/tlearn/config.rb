@@ -41,10 +41,10 @@ module TLearn
 
     def evaulator_config(training_data)
       nodes_config = {
-        :nodes => @nodes_config[:nodes],
+        :nodes => @nodes_config[:number_of_nodes],
         :inputs => training_data.no_of_inputs,
         :outputs => training_data.no_of_outputs,
-        :output_nodes => '41-46'
+        :output_nodes => @nodes_config[:output_nodes]
       }
 
       @connections_config = connections_ranges_to_strings(@connections_config)

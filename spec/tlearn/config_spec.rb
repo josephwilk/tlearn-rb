@@ -11,7 +11,8 @@ module TLearn
     end
     
     let(:settings){
-      { :nodes => {:nodes => 5},
+      { :nodes       => {:number_of_nodes => 9999,
+                         :output_nodes    => '41-46'},
         :connections => [{1..81   => '0'},
                          {1..40   => 'i1-i77'},
                          {1..40   =>  '47-86'},
@@ -27,6 +28,18 @@ module TLearn
     end
     
     describe "generating *.cf file" do
+      it "should set number of nodes" do
+        @config.setup_config(training_data)
+
+        config_file.should include "9999"
+      end
+
+      it "should set output nodes" do
+        @config.setup_config(training_data)
+
+        config_file.should include "41-46"
+      end
+
       it "should convert ranges to strings" do 
         @config.setup_config(training_data)
         
