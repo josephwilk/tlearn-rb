@@ -31,7 +31,7 @@ describe 'TLearnExt' do
 
     context "with an invalid file root" do
       it "should ext with status 1 (an error)" do
-        TLearnExt.train({'sweeps' => 1, 'file_root' => 'invalid file root'}).should == 1
+        TLearnExt.train({'sweeps' => 1, 'file_root' => 'data/no config exists'}).should == 1
       end
     end
   end
@@ -59,7 +59,7 @@ describe 'TLearnExt' do
 
     context "with an invalid file root" do
       it "should ext with status 1 (an error)" do
-        TLearnExt.fitness({'sweeps' => 1, 'file_root' => 'invalid file root'}).should == 1
+        TLearnExt.fitness({'sweeps' => 1, 'file_root' => 'no config exists'}).should == 1
       end
     end
   end
