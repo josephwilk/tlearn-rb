@@ -29,29 +29,25 @@ Usage
 ```ruby
 require 'tlearn'
 
-tlearn = TLearn.new({:nodes       => {:nodes  => 86},
-                     :connections => {'1-81'  => '0',
-                                      '1-40'  => 'i1-i77',
-                                      '41-46' => '1-40',
-                                      '1-40'  => '47-86',
-                                      '47-86' => '1-40 = 1. & 1. fixed one-to-one'},
-                     :special     => {:linear       => '47-86',
-                                      :weight_limit => '1.00',
-                                      :selected     => '1-86'})
-
+tlearn = TLearn.new({:nodes      => {:nodes => 86},
+                    :connections => [{1..81   => '0'},
+                                     {1..40   => 'i1-i77'},
+                                     {41..46  => '1-40'},
+                                     {1..40   =>  '47-86'},
+                                     {47..86  => ' 1-40 = 1. & 1. fixed one-to-one'}],
+                    :special     =>  {:linear => '47-86',
+                                     :weight_limit => '1.00',
+                                     :selected     => '1-86'}})
 
 tlearn = TLearn.new(neural_network_config)
   
-training_data = {[0] * 77 => [1, 0, 0, 0, 0, 0],
-                 [1] * 77 => [0, 0, 0, 0, 0, 1]} 
+training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
+                [{[1] * 77 => [0, 0, 0, 0, 0, 1]}]
   
 tlearn.train(training_data)
 
 tlearn.fitness([0] * 77)
-# ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
-# 
-# rank: 6 => 11111111111111111111111111111111111111111111111111111111111111111111111111111
-
+# => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
 ```
 
 License
