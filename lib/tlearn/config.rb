@@ -6,9 +6,9 @@ module TLearn
     DEFAULT_NUMBER_OF_SWEEPS = 1333000
     
     def initialize(config)
-      @connections_config = config[:connections]
-      @special_config     = config[:special]
-      @nodes_config       = config[:nodes]
+      @connections_config = config[:connections] || {}
+      @special_config     = config[:special]     || {}
+      @nodes_config       = config[:nodes]       || {}
     end
 
     def setup_config(training_data)
