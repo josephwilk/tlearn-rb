@@ -15,8 +15,8 @@ module TLearn
                          :output_nodes    => '41-46'},
        :connections => [{1..81   => '0'},
                          {1..40   => 'i1-i77'},
-                         {1..40   =>  '47-86'},
-                         {47..86  => ' 1-40 = 1. & 1. fixed one-to-one'}],
+                         {1..40   => '47-86'},
+                         {47..86  => '1-40 = 1. & 1. fixed one-to-one'}],
        :special => {:weight_limit => 1.0}
       }
     }
