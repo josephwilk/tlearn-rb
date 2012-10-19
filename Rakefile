@@ -19,7 +19,7 @@ end
 if tlearn_extension_present?
 
   namespace :example do
-        require File.dirname(__FILE__) + '/lib/tlearn'
+    require File.dirname(__FILE__) + '/lib/tlearn'
 
     neural_network_config =   {:nodes       => {:number_of_nodes => 86,
                                                 :output_nodes => '41-46'},
@@ -29,8 +29,8 @@ if tlearn_extension_present?
                                                 {1..40   =>  '47-86'},
                                                 {47..86  => '1-40 = 1. & 1. fixed one-to-one'}],
                                :special      => {:linear => '47-86',
-                               :weight_limit => 1.00,
-                               :selected     => '1-86'}}
+                                                 :weight_limit => 1.00,
+                                                 :selected     => '1-86'}}
 
     SWEEPS = 1000
 
