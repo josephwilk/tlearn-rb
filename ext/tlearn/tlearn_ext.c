@@ -129,7 +129,7 @@ int run_training(nsweeps, file_path, current_weights_output)
 {
   int  argc = 1;
   char *argv[argc];
-  argv[0] = 'tlearn';
+  argv[0] = "tlearn";
   int status;
 
   backprop = 0;
