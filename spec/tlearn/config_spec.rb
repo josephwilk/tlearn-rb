@@ -12,8 +12,8 @@ module TLearn
     
     let(:settings){
       {:nodes       => {:number_of_nodes => 9999,
-                         :output_nodes    => '41-46'},
-       :connections => [{1..81   => '0'},
+                         :output_nodes    => 41..46},
+       :connections => [{1..81   => 0},
                          {1..40   => 'i1-i77'},
                          {1..40   => '47-86'},
                          {47..86  => '1-40 = 1. & 1. fixed one-to-one'}],

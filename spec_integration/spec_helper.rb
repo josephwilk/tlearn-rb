@@ -5,8 +5,8 @@ require File.dirname(__FILE__) + '/../lib/tlearn'
 
 def example_config
   {:nodes       => {:number_of_nodes => 86,
-                    :output_nodes => '41-46'},
-                    :connections => [{1..81   => '0'},
+                    :output_nodes => 41..46},
+                    :connections => [{1..81   => 0},
                                      {1..40   => 'i1-i77'},
                                      {41..46  => '1-40'},
                                      {1..40   =>  '47-86'},

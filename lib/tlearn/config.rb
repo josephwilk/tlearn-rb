@@ -36,7 +36,11 @@ module TLearn
     private
 
     def connections_ranges_to_strings(connections_config)
-      connections_config.map{|hash| {hash.keys[0].to_s.gsub('..','-') => hash.values[0]}}
+      connections_config.map{|hash| {range_to_string(hash.keys[0]) => hash.values[0]}}
+    end
+
+    def range_to_string(range)
+      range.to_s.gsub('..','-')
     end
 
     def evaulator_config(training_data)
@@ -44,7 +48,7 @@ module TLearn
         :nodes => @nodes_config[:number_of_nodes],
         :inputs => training_data.no_of_inputs,
         :outputs => training_data.no_of_outputs,
-        :output_nodes => @nodes_config[:output_nodes]
+        :output_nodes => range_to_string(@nodes_config[:output_nodes])
       }
 
       @connections_config = connections_ranges_to_strings(@connections_config)
