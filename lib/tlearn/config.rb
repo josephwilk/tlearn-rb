@@ -36,11 +36,23 @@ module TLearn
     private
 
     def connections_ranges_to_strings(connections_config)
-      connections_config.map{|hash| {range_to_string(hash.keys[0]) => hash.values[0]}}
+      connections_config.map{|hash| {input_to_config_string(hash.keys[0]) => input_to_config_string(hash.values[0])}}
     end
 
-    def range_to_string(range)
-      range.to_s.gsub('..','-')
+    def input_to_config_string(range)
+      if range.is_a?(Range)
+        if range.max == range.min
+          "#{range.max} & #{range.min}"
+        else
+          range.to_s.gsub('..','-')
+        end
+      elsif range.is_a?(Array)
+        values = range.map{|value| input_to_config_string(value)}
+        values[0] = values[0] + " ="
+        values.join(" ").gsub('one_to_one', 'one-to-one')
+      else
+        range
+      end
     end
 
     def evaulator_config(training_data)
@@ -48,7 +60,7 @@ module TLearn
         :nodes => @nodes_config[:number_of_nodes],
         :inputs => training_data.no_of_inputs,
         :outputs => training_data.no_of_outputs,
-        :output_nodes => range_to_string(@nodes_config[:output_nodes])
+        :output_nodes => input_to_config_string(@nodes_config[:output_nodes])
       }
 
       @connections_config = connections_ranges_to_strings(@connections_config)
@@ -57,7 +69,7 @@ module TLearn
       node_config_strings = nodes_config.map{|key,value| "#{key.to_s.gsub('_',' ')} = #{value}" }
       node_config_strings << "output nodes are #{output_nodes}"
 
-      connection_config_strings = @connections_config.map{|mapping| "#{mapping.keys[0]} from #{mapping.values[0]}" }
+      connection_config_strings = @connections_config.map{|mapping| "#{mapping.keys[0]} from #{input_to_config_string(mapping.values[0])}" }
       connection_config_strings =  ["groups = #{0}"] + connection_config_strings
     
 
@@ -67,7 +79,7 @@ NODES:
 CONNECTIONS:
 #{connection_config_strings.join("\n")}
 SPECIAL:
-#{@special_config.map{|key,value| "#{key} = #{value}" }.join("\n")}
+#{@special_config.map{|key,value| "#{key} = #{input_to_config_string(value)}" }.join("\n")}
 EOS
     end
 
