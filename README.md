@@ -50,6 +50,13 @@ tlearn.fitness([0] * 77, sweeps = 200)
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
 ```
 
+C TLearn Library
+=========
+
+The Original TLearn C library was written by:
+* Kim Plunkett
+* Jeffrey L. Elman
+
 License
 =========
 
