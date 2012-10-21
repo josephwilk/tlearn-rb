@@ -40,7 +40,6 @@ tlearn = TLearn.new({:number_of_nodes => 86,
                                           {1..40   => 47..86},
                                           {47..86  => [1..40, (1.0)..(1.0), :fixed, :one_to_one]}]})
                  
-arn = TLearn.new(neural_network_config)
   
 training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
                 [{[1] * 77 => [0, 0, 0, 0, 0, 1]}]
