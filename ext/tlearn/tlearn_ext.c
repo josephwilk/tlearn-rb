@@ -15,6 +15,7 @@ configuration is defined in a ".cf" file documented in tlearn.man.
 
 ------------------------------------------------------------------------*/
 #include <ruby.h>
+
 #include <math.h>
 #include <stdio.h>
 #include <signal.h>
@@ -443,8 +444,6 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
 
   data = 0;
 
-  printf("into sweeps");
-
   nsweeps += tsweeps;
   for (sweep = tsweeps; sweep < nsweeps; sweep++){
 
@@ -531,19 +530,17 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   char *file_root        = StringValueCStr(file_root_value);
 
   float current_weights_output[6];
-
-  printf("1 alive");
   
   int result = run_training(nsweeps, file_root, current_weights_output);
-  
-  printf("2 alive");
-  
   return rb_int_new(result);
 }
 
 static VALUE tlearn_fitness(VALUE self, VALUE config) {
   int  tlearn_args_count = 4;
   char *tlearn_args[tlearn_args_count];
+
+
+
 
   VALUE ruby_array       = rb_ary_new();
   VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
