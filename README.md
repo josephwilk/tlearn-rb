@@ -29,7 +29,7 @@ Usage
 ```ruby
 require 'tlearn'
 
-tlearn = TLearn.new({:number_of_nodes => 9999,
+tlearn = TLearn.new({:number_of_nodes => 86,
                      :output_nodes    => 41..46,
                      :linear          => 47..86,
                      :weight_limit    => 1.00,
