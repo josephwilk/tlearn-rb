@@ -6,9 +6,8 @@ module TLearn
     DEFAULT_NUMBER_OF_SWEEPS = 1333000
     
     def initialize(config)
-      @connections_config = config[:connections] || {}
-      @special_config     = config[:special]     || {}
-      @nodes_config       = config[:nodes]       || {}
+      @connections_config = config.delete(:connections) || {}
+      @config             = config                      || {}
     end
 
     def setup_config(training_data)
@@ -39,28 +38,28 @@ module TLearn
       connections_config.map{|hash| {input_to_config_string(hash.keys[0]) => input_to_config_string(hash.values[0])}}
     end
 
-    def input_to_config_string(range)
-      if range.is_a?(Range)
-        if range.max == range.min
-          "#{range.max} & #{range.min}"
+    def input_to_config_string(input)
+      if input.is_a?(Range)
+        if input.max == input.min
+          "#{input.max} & #{input.min}"
         else
-          range.to_s.gsub('..','-')
+          input.to_s.gsub('..','-')
         end
-      elsif range.is_a?(Array)
-        values = range.map{|value| input_to_config_string(value)}
+      elsif input.is_a?(Array)
+        values = input.map{|value| input_to_config_string(value)}
         values[0] = values[0] + " ="
         values.join(" ").gsub('one_to_one', 'one-to-one')
       else
-        range
+        input
       end
     end
 
     def evaulator_config(training_data)
       nodes_config = {
-        :nodes => @nodes_config[:number_of_nodes],
+        :nodes => @config[:number_of_nodes],
         :inputs => training_data.no_of_inputs,
         :outputs => training_data.no_of_outputs,
-        :output_nodes => input_to_config_string(@nodes_config[:output_nodes])
+        :output_nodes => input_to_config_string(@config[:output_nodes])
       }
 
       @connections_config = connections_ranges_to_strings(@connections_config)
@@ -71,7 +70,11 @@ module TLearn
 
       connection_config_strings = @connections_config.map{|mapping| "#{mapping.keys[0]} from #{input_to_config_string(mapping.values[0])}" }
       connection_config_strings =  ["groups = #{0}"] + connection_config_strings
-    
+      
+      special_config = {}
+      special_config[:linear] = @config[:linear]
+      special_config[:weight_limit] = @config[:weight_limit]
+      special_config[:selected] = @config[:selected]
 
       config = <<EOS
 NODES:
@@ -79,7 +82,7 @@ NODES:
 CONNECTIONS:
 #{connection_config_strings.join("\n")}
 SPECIAL:
-#{@special_config.map{|key,value| "#{key} = #{input_to_config_string(value)}" }.join("\n")}
+#{special_config.map{|key,value| "#{key} = #{input_to_config_string(value)}" }.join("\n")}
 EOS
     end
 
