@@ -5,6 +5,8 @@ describe 'TLearnExt' do
   let(:number_of_sweeps){ 200 }
 
   before(:all) do
+    FileUtils.rm_f(Dir.glob("#{TLearn::Config::WORKING_DIR}/*"))
+
     training_data = [{[1] * 77 => [0, 0, 0, 0, 0, 1]}],
                     [{[0] * 77 => [1, 0, 0, 0, 0, 0]}]
 
