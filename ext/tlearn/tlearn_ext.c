@@ -553,9 +553,6 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   int  tlearn_args_count = 4;
   char *tlearn_args[tlearn_args_count];
 
-
-
-
   VALUE ruby_array       = rb_ary_new();
   VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
 
