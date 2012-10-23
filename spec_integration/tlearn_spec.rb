@@ -15,18 +15,26 @@ describe "TLearn" do
     ]
   }
 
-  it "should train the tlearn neural network" do
-    tlearn = TLearn::Run.new(example_config, out)
+  describe 'training a neural network' do
+
+    it "should train the tlearn neural network" do
+      tlearn = TLearn::Run.new(example_config, out)
     
-    tlearn.train(training_data, number_of_sweeps)
-  end
+      tlearn.train(training_data, number_of_sweeps)
+    end
   
+    it "should generate a weights file that can be used for future fitness tests"
+
+  end
+
   describe "testing fitness using trained network" do
     before(:all) do
       tlearn = TLearn::Run.new(example_config, out)
       tlearn.train(training_data, number_of_sweeps)
     end
     
+    it "should take a weights file from previous training session"
+
     it "should rank 77 1s with a 6" do
       test_subject = [1] * 77
 
