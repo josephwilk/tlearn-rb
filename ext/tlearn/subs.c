@@ -47,6 +47,8 @@ extern	long	rms_report;	/* report error every report sweeps */
 
 extern	float	criterion;	/* exit program when rms error < criterion */
 
+extern int start = 1;
+
 
 float rans(w)
 	float	w;
@@ -109,7 +111,6 @@ print_output(aold)
 print_error(e)
 	float	*e;
 {
-	static	int	start = 1;
 	static	FILE	*fp;
 
 	FILE	*fopen();

@@ -109,6 +109,7 @@ extern int  localist;  /* flag for speed-up with localist inputs */
 extern int  randomly;  /* flag for presenting inputs in random order */
 extern int  limits;    /* flag for limited weights */
 extern int  ce;        /* flag for cross_entropy */
+extern int start;
 
 extern char  root[128];  /* root filename for .cf, .data, .teach, etc.*/
 extern char  loadfile[128];  /* filename for weightfile to be read in */
@@ -193,6 +194,7 @@ void cleanup_horrid_globals(){
     loadfile[0] = 0;
 
 	otarget = 0;
+	start = 1;
 
     free(cinfo);
     free(ninfo);
