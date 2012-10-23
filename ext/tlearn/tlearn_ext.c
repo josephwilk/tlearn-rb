@@ -155,6 +155,29 @@ int run_fitness(argc,argv, nsweeps, file_path, current_weights_output)
   return(status);
 }
 
+void post_cleanup(){
+	free(outputs);
+	free(selects);
+	free(linput);
+
+	free(ninfo);
+	free(cinfo);
+
+	free(znew);
+	free(zold);
+	free(zmem);
+	free(wt);
+	free(dwt);
+	free(winc);
+	free(target);
+	free(error);
+	free(pnew);
+	free(pold);
+
+	free(otarget);
+	free(data);
+}
+
 void cleanup_horrid_globals(){
     //Reset getopts
     optind  = 1;
@@ -493,8 +516,6 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
       for (i = 0; i < no; i++){
         current_weights_output[i] = zold[ni+outputs[i]];
       }
-
-      //print_output(zold);
     }
     if (rms_report && (++rtime >= rms_report)){
       rtime = 0;
@@ -546,6 +567,9 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   float current_weights_output[6];
   
   int result = run_training(nsweeps, file_root, current_weights_output);
+
+  post_cleanup();
+
   return rb_int_new(result);
 }
 
@@ -574,6 +598,8 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   float current_weights_output[6];
 
   int failure = run_fitness(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
+
+  post_cleanup();
 
   if(failure == 0){
     float weight;
