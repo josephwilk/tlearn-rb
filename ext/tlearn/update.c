@@ -50,6 +50,9 @@ extern	int	randomly;	/* flag for presenting inputs in random order */
 extern	int	localist;	/* flag for localist inputs */
 extern	int	limits;		/* flag for limited weights */
 
+extern	float *otarget = 0;	/* (no) back-up copy of target values */
+
+
 long	dc = 0;
 int	*ldata = 0;
 
@@ -245,8 +248,6 @@ update_targets(atarget,time,tick,flag,maxtime)
 	static	long	ts;
 
 	static	long	next;		/* next time tag in .teach file */
-
-	static	float	*otarget = 0;	/* (no) back-up copy of target values */
 
 	static	FILE	*fp;
 

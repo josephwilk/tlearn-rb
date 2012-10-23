@@ -76,6 +76,8 @@ extern int  *outputs;    /* (no) indices of output nodes */
 extern int  *selects;    /* (nn+1) nodes selected for probe printout */
 extern int  *linput;     /* (ni) localist input array */
 
+extern float *otarget;
+
 extern float  *znew;     /* (nt) inputs and activations at time t+1 */
 extern float  *zold;     /* (nt) inputs and activations at time t */
 extern float  *zmem;     /* (nt) inputs and activations at time t */
@@ -189,6 +191,8 @@ void cleanup_horrid_globals(){
     ngroups = 0;
     root[0] = 0;
     loadfile[0] = 0;
+
+	otarget = 0;
 
     free(cinfo);
     free(ninfo);
