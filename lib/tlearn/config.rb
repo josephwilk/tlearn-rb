@@ -5,9 +5,14 @@ module TLearn
     NUMBER_OF_RESET_TIMEPOINTS = 3497
     DEFAULT_NUMBER_OF_SWEEPS = 1333000
     
-    def initialize(config)
+    def initialize(config, working_dir = nil)
       @connections_config = config.delete(:connections) || {}
       @config             = config                      || {}
+      @working_dir = working_dir || WORKING_DIR
+    end
+
+    def working_dir
+      @working_dir
     end
 
     def setup_config(training_data)

@@ -2,8 +2,8 @@ module TLearn
   class RunTLearn
     class UntrainedError < Exception; end;
   
-    def initialize(config = {})
-      @config = Config.new(config)
+    def initialize(config = {}, working_dir = nil)
+      @config = Config.new(config, working_dir)
     end
   
     def fitness(data, number_of_sweeps = @config.number_of_sweeps)
@@ -25,8 +25,8 @@ module TLearn
       execute_tlearn_train(number_of_sweeps)
           
       if training_successful?(number_of_sweeps)
-        weights = File.read("#{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts").split("\n")
-        `cp #{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts #{Config::WORKING_DIR}/#{Config::TLEARN_NAMESPACE}.wts`
+        weights = File.read("#{@config.working_dir}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts").split("\n")
+        `cp #{@config.working_dir}/#{Config::TLEARN_NAMESPACE}.#{number_of_sweeps}.wts #{@config.working_dir}/#{Config::TLEARN_NAMESPACE}.wts`
         weights.map{|line| line.split("\t").map{|number| number.strip}}
       else
         false
@@ -36,7 +36,7 @@ module TLearn
     private
     
     def file_root
-      "#{File.expand_path(Config::WORKING_DIR)}/#{Config::TLEARN_NAMESPACE}"
+      "#{File.expand_path(@config.working_dir)}/#{Config::TLEARN_NAMESPACE}"
     end
 
     def clear_previous_fitness_session
@@ -45,7 +45,7 @@ module TLearn
     end
 
     def clear_entire_training_data
-      FileUtils.rm_f(Dir.glob("#{Config::WORKING_DIR}/*"))
+      FileUtils.rm_f(Dir.glob("#{@config.working_dir}/*"))
     end
     
     def training_successful?(number_of_sweeps)

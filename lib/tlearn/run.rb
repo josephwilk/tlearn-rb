@@ -6,8 +6,8 @@ module TLearn
       @out = out
     end
 
-    def train(data, number_of_sweeps = nil)
-      run_tlearn = RunTLearn.new(@config)
+    def train(data, number_of_sweeps = nil, working_dir = nil)
+      run_tlearn = RunTLearn.new(@config, working_dir)
 
       results = run_tlearn.train(TrainingData.new(data), number_of_sweeps)
       
