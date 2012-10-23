@@ -152,6 +152,48 @@ int run_fitness(argc,argv, nsweeps, file_path, current_weights_output)
   return(status);
 }
 
+void cleanup_horrid_globals(){
+    //Reset getopts
+    optind  = 1;
+    sweep = 0;
+    tsweeps = 0;
+    rate = .1;
+    momentum = 0.;
+    weight_limit = 1.;
+    criterion = 0.;
+    init_bias = 0.;
+    rms_report = 0;
+    ngroups = 0;
+    teacher = 0;
+    localist = 0;
+    randomly = 0;
+    limits = 0;
+    ce = 0;
+    outputs = 0;
+    selects = 0;
+    linput = 0;
+    cinfo = 0;
+    ninfo = 0;
+    znew = 0;
+    zold = 0;
+    zmem = 0;
+    pnew = 0;
+    pold = 0;
+    wt = 0;
+    dwt = 0;
+    winc = 0;
+    target = 0;
+    error = 0;
+    cfp = 0;
+    data = 0;
+    ngroups = 0;
+    root[0] = 0;
+    loadfile[0] = 0;
+
+    free(cinfo);
+    free(ninfo);
+}
+
 int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
   int  argc;
   char  **argv;
@@ -160,42 +202,8 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
   int backprop;
   float *current_weights_output;
 {
-  //Reset getopts
-  optind  = 1;
-  sweep = 0;
-  tsweeps = 0;
-  rate = .1;
-  momentum = 0.;
-  weight_limit = 1.;
-  criterion = 0.;
-  init_bias = 0.;
-  rms_report = 0;
-  ngroups = 0;
-  teacher = 0;
-  localist = 0;
-  randomly = 0;
-  limits = 0;
-  ce = 0;
-  outputs = 0;
-  selects = 0;
-  linput = 0;
-  cinfo = 0;
-  ninfo = 0;
-  znew = 0;
-  zold = 0;
-  zmem = 0;
-  pnew = 0;
-  pold = 0;
-  wt = 0;
-  dwt = 0;
-  winc = 0;
-  target = 0;
-  error = 0;
-  cfp = 0;
-  data = 0;
-  ngroups = 0;
-  root[0] = 0;
-  loadfile[0] = 0;
+
+  cleanup_horrid_globals();
 
   FILE  *fopen();
   FILE  *fpid;
