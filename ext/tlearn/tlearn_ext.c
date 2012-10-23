@@ -179,7 +179,6 @@ void post_cleanup(){
 }
 
 void cleanup_horrid_globals(){
-    //Reset getopts
     optind  = 1;
     sweep = 0;
     tsweeps = 0;
@@ -218,9 +217,6 @@ void cleanup_horrid_globals(){
 
 	otarget = 0;
 	start = 1;
-
-    free(cinfo);
-    free(ninfo);
 }
 
 int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
