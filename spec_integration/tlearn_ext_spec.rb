@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe 'TLearnExt' do
   let(:out){ StringIO.new }
-  let(:number_of_sweeps){ 200 }
+  let(:number_of_sweeps){ 1 }
 
   before(:all) do
     FileUtils.rm_f(Dir.glob("#{TLearn::Config::WORKING_DIR}/*"))
@@ -12,7 +12,7 @@ describe 'TLearnExt' do
 
     tlearn = TLearn::Run.new(example_config, out)
 
-    tlearn.train(training_data, 1, File.expand_path(File.dirname(__FILE__) + '/../data/'))
+    tlearn.train(training_data, number_of_sweeps, File.expand_path(File.dirname(__FILE__) + '/../data/'))
   end
 
   def example_file_root
@@ -27,13 +27,13 @@ describe 'TLearnExt' do
   describe ".train" do
     context "with a valid file root" do
       it "should exit with status 0 (sucess)" do
-        TLearnExt.train({:sweeps => 1, :file_root => example_file_root}).should == 0
+        TLearnExt.train({:sweeps => number_of_sweeps, :file_root => example_file_root}).should == 0
       end
     end
 
     context "with an invalid file root" do
       it "should ext with status 1 (an error)" do
-        TLearnExt.train({:sweeps => 1, :file_root => 'data/no config exists'}).should == 1
+        TLearnExt.train({:sweeps => number_of_sweeps, :file_root => 'data/no config exists'}).should == 1
       end
     end
   end
@@ -41,19 +41,19 @@ describe 'TLearnExt' do
   describe ".fitness" do
     context "with a valid file root" do
       it "should not return a status " do
-        TLearnExt.fitness({:sweeps => 1, :file_root => example_file_root}).should_not == 1
+        TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => example_file_root}).should_not == 1
       end
       
       it "should return a final set of iterated weights" do
-        TLearnExt.fitness({:sweeps => 1, :file_root => example_file_root}).should have(6).weights
+        TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => example_file_root}).should have(6).weights
       end
 
       it "should return the weights as floats" do
-        TLearnExt.fitness({:sweeps => 1, :file_root => example_file_root}).map(&:class).uniq.should == [Float]
+        TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => example_file_root}).map(&:class).uniq.should == [Float]
       end
 
       it "should return weights between 0 and 1" do
-        TLearnExt.fitness({:sweeps => 1, :file_root => example_file_root}).each do |weight|
+        TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => example_file_root}).each do |weight|
           weight.should >= 0 && weight.should <= 1
         end
       end
@@ -61,7 +61,7 @@ describe 'TLearnExt' do
 
     context "with an invalid file root" do
       it "should ext with status 1 (an error)" do
-        TLearnExt.fitness({:sweeps => 1, :file_root => 'no config exists'}).should == 1
+        TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => 'no config exists'}).should == 1
       end
     end
   end
