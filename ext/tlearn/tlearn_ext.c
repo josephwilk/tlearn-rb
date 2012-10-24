@@ -544,15 +544,6 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
 
 /* -- Ruby interface -- */
 
-int do_print(VALUE key, VALUE val, VALUE in) {
-  fprintf(stderr, "Input data is %s\n", StringValueCStr(in));
-
-  fprintf(stderr, "Key %s=>Value %s\n", StringValueCStr(key),
-         StringValueCStr(val));
-
-  return ST_CONTINUE;
-}
-
 static VALUE tlearn_train(VALUE self, VALUE config) {
   VALUE sweeps_value = rb_hash_aref(config, ID2SYM(rb_intern("sweeps")));
   long nsweeps       = NUM2DBL(sweeps_value);
