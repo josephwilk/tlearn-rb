@@ -19,8 +19,8 @@ module TLearn
       end
     end
 
-    def fitness(data, number_of_sweeps = nil)
-      run_tlearn = RunTLearn.new(@config)
+    def fitness(data, number_of_sweeps = nil, working_dir = nil)
+      run_tlearn = RunTLearn.new(@config, working_dir)
 
       run_tlearn.fitness(FitnessData.new(data), number_of_sweeps)
     end

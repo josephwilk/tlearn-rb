@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe "TLearn" do
   before(:all) do
     FileUtils.rm_f(Dir.glob("#{TLearn::Config::WORKING_DIR}/*"))
+    FileUtils.rm_f(Dir.glob("tmp/*"))
   end
 
   let(:out){ StringIO.new }
@@ -39,7 +40,17 @@ describe "TLearn" do
       tlearn.train(training_data, number_of_sweeps)
     end
     
-    it "should take a weights file from previous training session"
+    it "should take a weights file from a previous training session" do
+      weights_dir = File.dirname(__FILE__) + '/../tmp/'
+
+      test_subject = [1] * 77
+
+      tlearn = TLearn::Run.new(example_config, out)
+
+      rating = tlearn.fitness(test_subject, number_of_sweeps, weights_dir)
+
+      p rating
+    end
 
     it "should rank 77 1s with a 6" do
       test_subject = [1] * 77
