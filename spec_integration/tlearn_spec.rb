@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe "TLearn" do
   before(:all) do
     FileUtils.rm_f(Dir.glob("#{TLearn::Config::WORKING_DIR}/*"))
-    FileUtils.rm_f(Dir.glob("tmp/*"))
+    FileUtils.rm_f(Dir.glob("tmp/test"))
+    FileUtils.mkdir_p("tmp/test")
   end
 
   let(:out){ StringIO.new }
@@ -27,9 +28,9 @@ describe "TLearn" do
     it "should generate a weights file that can be used for future fitness tests" do
       tlearn = TLearn::Run.new(example_config, out)
 
-      tlearn.train(training_data, number_of_sweeps, File.dirname(__FILE__) + '/../tmp/')
+      tlearn.train(training_data, number_of_sweeps, File.dirname(__FILE__) + '/../tmp/test/')
 
-      File.exists?(File.dirname(__FILE__) + '/../tmp/evaluator.wts').should be_true
+      File.exists?(File.dirname(__FILE__) + '/../tmp/test/evaluator.wts').should be_true
     end
 
   end
@@ -41,15 +42,11 @@ describe "TLearn" do
     end
     
     it "should take a weights file from a previous training session" do
-      weights_dir = File.dirname(__FILE__) + '/../tmp/'
-
-      test_subject = [1] * 77
+      weights_dir = File.dirname(__FILE__) + '/../tmp/test/'
 
       tlearn = TLearn::Run.new(example_config, out)
 
-      rating = tlearn.fitness(test_subject, number_of_sweeps, weights_dir)
-
-      p rating
+      tlearn.fitness([1] * 77, number_of_sweeps, weights_dir)
     end
 
     it "should rank 77 1s with a 6" do

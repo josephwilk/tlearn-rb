@@ -18,4 +18,5 @@ end
 
 at_exit do
   FileUtils.rm_f(Dir.glob("#{TLearn::Config::WORKING_DIR}/*")) unless ENV['KEEP_DATA']
+  FileUtils.rm_f(Dir.glob("tmp/test/*")) unless ENV['KEEP_DATA']
 end
