@@ -34,7 +34,7 @@ module TLearn
     end
 
     def file_root
-      "#{WORKING_DIR}/#{TLEARN_NAMESPACE}"
+      "#{working_dir}/#{TLEARN_NAMESPACE}"
     end
 
     private
