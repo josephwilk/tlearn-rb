@@ -48,6 +48,14 @@ tlearn.train(training_data, sweeps = 200)
 
 tlearn.fitness([0] * 77, sweeps = 200)
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
+
+
+#Fitness reusing a previous training session:
+
+tlearn.fitness([0] * 77, sweeps = 200, working_dir = '/training_session/')
+# => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
+
+
 ```
 
 C TLearn Library
