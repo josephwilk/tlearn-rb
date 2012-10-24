@@ -26,9 +26,9 @@ describe "TLearn" do
     it "should generate a weights file that can be used for future fitness tests" do
       tlearn = TLearn::Run.new(example_config, out)
 
-      tlearn.train(training_data, number_of_sweeps, File.dirname(__FILE__) + '/../data/')
+      tlearn.train(training_data, number_of_sweeps, File.dirname(__FILE__) + '/../tmp/')
 
-      File.exists?(File.dirname(__FILE__) + '/../data/evaluator.wts').should be_true
+      File.exists?(File.dirname(__FILE__) + '/../tmp/evaluator.wts').should be_true
     end
 
   end
