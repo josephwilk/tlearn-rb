@@ -12,7 +12,7 @@ describe 'TLearnExt' do
 
     tlearn = TLearn::Run.new(example_config, out)
 
-    tlearn.train(training_data, number_of_sweeps)
+    tlearn.train(training_data, 1, File.expand_path(File.dirname(__FILE__) + '/../data/'))
   end
 
   def example_file_root
