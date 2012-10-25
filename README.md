@@ -80,17 +80,17 @@ Yes, its complicated configuring this thing. Lets work through the different con
 
 <h4>Connections(how nodes connect to each other):</h4>
 
-<pre>#nodes 1-6 connections will never be less than 1 or greater than 10.
-1..6 => {:min => 1, :max => 10}</pre>
+<pre>#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
+1..6 => [7..9, {:min => 1, :max => 10}]</pre>
 
 <pre>#nodes 1-6 are fed from node 0 (node 0 is always the bias node).
 1..6 => 0 </pre> 
 
-<pre>#nodes 1-6 connection weights are fixed at 2 and will not change throughout learning.
-1..6 => {:min => 2, :max => 2] </pre>
-
 <pre>#nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
 1..6 => [7..10, :fixed]</pre>
+
+<pre>#nodes 1-6 connections with nodes 7-10 are fixed at 2 and will not change throughout learning.
+1..6 => [7..9, {:min => 2, :max => 2}] </pre>
 
 <pre>#1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
 1..6 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one'] </pre>
