@@ -95,15 +95,15 @@ nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will no
 1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
 0ne-to-one means:
 
-Node 1 is fed from node 7,
-Node 2 is fed from node 8
-Node 3 is feed from node 9.
+* Node 1 is fed from node 7,
+* Node 2 is fed from node 8
+* Node 3 is feed from node 9.
 
 The normal case (without one-to-one) is:
 
-Node 1 is fed from 7-9
-Node 2 is fed from 7-9
-Node 3 is fed from 7-9
+* Node 1 is fed from 7-9
+* Node 2 is fed from 7-9
+* Node 3 is fed from 7-9
  
 <pre>1..6 => i1..i10</pre> 
 1-6 nodes are fed input nodes 1-10.
