@@ -44,12 +44,10 @@ module TLearn
     end
 
     def input_to_config_string(input)
-      if input.is_a?(Range)
-        if input.max == input.min
-          "#{input.max} & #{input.min}"
-        else
-          input.to_s.gsub('..','-')
-        end
+      if input.is_a?(Hash)
+        "#{input[:min]} & #{input[:max]}"
+      elsif input.is_a?(Range)
+        input.to_s.gsub('..','-')
       elsif input.is_a?(Array)
         values = input.map{|value| input_to_config_string(value)}
         values[0] = values[0] + " ="
