@@ -81,7 +81,7 @@ The Original TLearn C library was written by:
 Contributors
 =========
 
-* [Joseph Wilk](http://blog.josephwilk.net)
+* Joseph Wilk [blog](http://blog.josephwilk.net) | [twitter](http://twitter.com/josephwilk)
 
 License
 =========
