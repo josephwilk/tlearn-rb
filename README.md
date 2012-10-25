@@ -64,9 +64,52 @@ tlearn.fitness([0] * 77, sweeps = 200, working_dir = '/training_session/')
 Configuring TLearn (What the heck does all that config mean?)
 =========
 
-Yes, its complicated configuring this thing. 
+Yes, its complicated configuring this thing. Lets work through the different configuration:
 
-Your best bet for now is the manual (pdf):
+<pre>:number_of_nodes => 86</pre>
+Total number of nodes in the network (not counting input).
+
+<pre>:'output_nodes'    => 41..46</pre>
+The nodes that are used for output.
+
+<pre>:linear_nodes => 1..10</pre>
+nodes 1-10 are linear.
+
+<pre>:bipolar_nodes => 1..10</pre>
+nodes 1-10 are bipolar.
+
+<h4>Connections(how nodes connect to each other):</h4>
+<pre>1..6 => {:min => 1, :max => 10}</pre>
+nodes 1-6 connections will never be less than 1 or greater than 10.
+
+<pre>1..6 => 0 </pre> 
+nodes 1-6 are fed from node 0 (node 0 is always the bias node).
+
+<pre>1..6 => {:min => 2, :max => 2] </pre>
+nodes 1-6 connection weights are fixed at 2 and will not change throughout learning.
+
+<pre>1..6 => [7..10, :fixed]</pre>
+nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
+
+<pre>1..6 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one'] </pre>
+1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
+0ne-to-one means:
+
+Node 1 is fed from node 7,
+Node 2 is fed from node 8
+Node 3 is feed from node 9.
+
+The normal case (without one-to-one) is:
+
+Node 1 is fed from 7-9
+Node 2 is fed from 7-9
+Node 3 is fed from 7-9
+ 
+<pre>1..6 => i1..i10</pre> 
+1-6 nodes are fed input nodes 1-10.
+
+
+There is also the TLearn manual if you want read more:
 
 http://blog.josephwilk.net/wp-content/uploads/2012/10/tlearn.pdf
 
