@@ -33,7 +33,6 @@ tlearn = TLearn.new(:number_of_nodes => 86,
                     :output_nodes    => 41..46,
                     :linear          => 47..86,
                     :weight_limit    => 1.00,
-                    :selected        => 1..86,
                     :connections     => [{1..81   => 0},
                                          {1..40   => :i1..:i77},
                                          {41..46  => 1..40},
@@ -77,6 +76,9 @@ Yes, its complicated configuring this thing. Lets work through the different con
 
 <pre>#nodes 1-10 are bipolar.
 :bipolar_nodes => 1..10</pre>
+
+<pre>#weights between nodes will not exceed 1.00
+:weight_limit => 1.00</pre>
 
 <h4>Connections(how nodes connect to each other):</h4>
 
