@@ -80,7 +80,9 @@ Yes, its complicated configuring this thing. Lets work through the different con
 <pre>#weights between nodes will not exceed 1.00
 :weight_limit => 1.00</pre>
 
-<h4>Connections(how nodes connect to each other):</h4>
+<h4>Connections</h4>
+
+Essentially :connections describes how the nodes are connected and any constraints on the weights of those connections.
 
 <pre>#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
 1..6 => [7..9, {:min => 1, :max => 10}]</pre>
