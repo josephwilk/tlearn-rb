@@ -29,16 +29,16 @@ Usage
 ```ruby
 require 'tlearn'
 
-tlearn = TLearn.new({:number_of_nodes => 86,
-                     :output_nodes    => 41..46,
-                     :linear          => 47..86,
-                     :weight_limit    => 1.00,
-                     :selected        => 1..86,
-                     :connections     => [{1..81   => 0},
-                                          {1..40   => :i1..:i77},
-                                          {41..46  => 1..40},
-                                          {1..40   => 47..86},
-                                          {47..86  => [1..40, (1.0)..(1.0), :fixed, :one_to_one]}]})
+tlearn = TLearn.new(:number_of_nodes => 86,
+                    :output_nodes    => 41..46,
+                    :linear          => 47..86,
+                    :weight_limit    => 1.00,
+                    :selected        => 1..86,
+                    :connections     => [{1..81   => 0},
+                                         {1..40   => :i1..:i77},
+                                         {41..46  => 1..40},
+                                         {1..40   => 47..86},
+                                         {47..86  => [1..40, (1.0)..(1.0), :fixed, :one_to_one]}])
                  
   
 training_data = [{[0] * 77 => [1, 0, 0, 0, 0, 0]}],
@@ -48,15 +48,28 @@ tlearn.train(training_data, sweeps = 200)
 
 tlearn.fitness([0] * 77, sweeps = 200)
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
+```
 
+You will often seperate the training and fitness process. By specifying a working directory when training you can reuse the training data for later
+fitness evaulations.
 
-#Fitness reusing a previous training session:
-
+```ruby
+tlearn.train(training_data, sweeps = 200, working_dir='/training_session/')
+```
+```ruby
 tlearn.fitness([0] * 77, sweeps = 200, working_dir = '/training_session/')
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
-
-
 ```
+
+Configuring TLearn (What the heck does all that config mean?)
+=========
+
+Yes, its complicated configuring this thing. 
+
+Your best best for now is the manual:
+
+http://blog.josephwilk.net/wp-content/uploads/2012/10/tlearn.pdf
+
 
 C TLearn Library
 =========
