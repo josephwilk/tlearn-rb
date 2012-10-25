@@ -66,7 +66,7 @@ Configuring TLearn (What the heck does all that config mean?)
 
 Yes, its complicated configuring this thing. 
 
-Your best best for now is the manual:
+Your best bet for now is the manual (pdf):
 
 http://blog.josephwilk.net/wp-content/uploads/2012/10/tlearn.pdf
 
@@ -77,6 +77,11 @@ C TLearn Library
 The Original TLearn C library was written by:
 * Kim Plunkett
 * Jeffrey L. Elman
+
+Contributors
+=========
+
+* [Joseph Wilk](http://blog.josephwilk.net)
 
 License
 =========
