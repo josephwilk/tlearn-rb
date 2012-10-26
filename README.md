@@ -68,10 +68,10 @@ Yes, its complicated configuring this thing. Lets work through the different con
     #The nodes that are used for output.
     :'output_nodes' => 41..46
 
-    nodes 1-10 are linear.
+    nodes 1-10 are linear. Linear nodes ouput the inner-product of the input and weight vectors
     :linear_nodes => 1..10
 
-    #nodes 1-10 are bipolar.
+    #nodes 1-10 are bipolar. Bipolar nodes output ranges continuously from -1 to +1.
     :bipolar_nodes => 1..10
 
     #weights between nodes will not exceed 1.00
