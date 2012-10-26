@@ -1,5 +1,5 @@
-TLearn Ruby
-=========
+# TLearn Ruby
+
 
 [![Build Status](https://secure.travis-ci.org/josephwilk/tlearn-rb.png)](http://travis-ci.org/josephwilk/tlearn-rb)
 
@@ -7,24 +7,21 @@ Ruby helping make tlearn neural network simulator sane(ish) (http://crl.ucsd.edu
 
 To see an example run:
 
-<pre><code>rake example:train
-rake example:fitness
-</code></pre>
+`rake example:train
+rake example:fitness`
 
-Seriously? Just use FANN!
-=========
+# Seriously? Just use FANN!
 
 TLearn supports recurrent networks (http://en.wikipedia.org/wiki/Recurrent_neural_network), FANN does not. Recurrent networks maintain state, enabling the context of previous inputs to effect further outputs. 
 
 While there have been attempts to add recurrent networks to FANN (http://leenissen.dk/fann/forum/viewtopic.php?t=47) these are still sitting on a dead branch that was never merged into master.
 
-Installing TLearn
-=========
+# Installing TLearn
 
-<pre><code>gem install tlearn</code></pre>
+`gem install tlearn`
 
-Usage
-=========
+#Usage
+
 
 ```ruby
 require 'tlearn'
@@ -55,6 +52,7 @@ fitness evaulations.
 ```ruby
 tlearn.train(training_data, sweeps = 200, working_dir='/training_session/')
 ```
+
 ```ruby
 tlearn.fitness([0] * 77, sweeps = 200, working_dir = '/training_session/')
 # => ["0.016", "0.013", "0.022", "0.020", "0.463", "0.467"]
@@ -65,31 +63,31 @@ Configuring TLearn (What the heck does all that config mean?)
 
 Yes, its complicated configuring this thing. Lets work through the different configuration options:
 
-<pre>#Total number of nodes in the network (not counting input).
-:number_of_nodes => 86</pre>
+`#Total number of nodes in the network (not counting input).
+:number_of_nodes => 86`
 
-<pre>#The nodes that are used for output.
-:'output_nodes' => 41..46</pre>
+`#The nodes that are used for output.
+:'output_nodes' => 41..46`
 
-<pre>nodes 1-10 are linear.
-:linear_nodes => 1..10</pre>
+`nodes 1-10 are linear.
+:linear_nodes => 1..10`
 
-<pre>#nodes 1-10 are bipolar.
-:bipolar_nodes => 1..10</pre>
+`#nodes 1-10 are bipolar.
+:bipolar_nodes => 1..10`
 
-<pre>#weights between nodes will not exceed 1.00
-:weight_limit => 1.00</pre>
+`#weights between nodes will not exceed 1.00
+:weight_limit => 1.00`
 
 <h4>Connections</h4>
 Here we specify how all of our nodes are connected, the architecture of the neural network. 
 
 We use ranges to specify connections between nodes:
 
-<pre>1..3 => 4..6</pre>
+`1..3 => 4..6`
 
 Indicates connections:
 
-<pre>node 1 <- node 4 
+`node 1 <- node 4 
 node 1 <- node 5
 node 1 <- node 6
 
@@ -99,38 +97,37 @@ node 2 <- node 6
 
 node 3 <- node 4
 node 3 <- node 5
-node 3 <- node 6</pre>
+node 3 <- node 6`
 
 Note that the nodes specified first (1..3) are the destination nodes, the second nodes (4..6) are the source nodes. The sources nodes feed into the destination nodes.
 
 <p>Make sure you feed the input nodes into the network.</p>
 
-<pre>#1-6 nodes are fed input nodes 1-10.
-1..6 => i1..i10</pre> 
+`#1-6 nodes are fed input nodes 1-10.
+1..6 => i1..i10`
 
 <p>We can also add constraints to the different connections:</p>
-<pre>#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
-1..6 => [7..9, {:min => 1, :max => 10}]</pre>
+`#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
+1..6 => [7..9, {:min => 1, :max => 10}]`
 
-<pre>#nodes 1-6 are fed from node 0 (node 0 is always the bias node).
-1..6 => 0 </pre> 
+`#nodes 1-6 are fed from node 0 (node 0 is always the bias node).
+1..6 => 0`
 
-<pre>#nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
-1..6 => [7..10, :fixed]</pre>
+`#nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
+1..6 => [7..10, :fixed]`
 
-<pre>#nodes 1-6 connections with nodes 7-10 are fixed at 2 and will not change throughout learning.
-1..6 => [7..9, {:min => 2, :max => 2}] </pre>
+`#nodes 1-6 connections with nodes 7-10 are fixed at 2 and will not change throughout learning.
+1..6 => [7..9, {:min => 2, :max => 2}]`
 
-<pre>#1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
-1..3 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one'] </pre>
+`#1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
+1..3 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one']`
 
-:one_to_one changes the way connections are mapped. Instead of one node mapping to every other node we have a 1-1 mapping between nodes:
+one_to_one changes the way connections are mapped. Instead of one node mapping to every other node we have a 1-1 mapping between nodes:
 
 For example:
-<pre>node 1 -> node 7
+`node 1 -> node 7
 mode 2 -> node 8
-node 3 -> node 9
-</pre>
+node 3 -> node 9`
 
 
 There is also the TLearn manual if you want read more:
@@ -138,20 +135,18 @@ There is also the TLearn manual if you want read more:
 http://blog.josephwilk.net/wp-content/uploads/2012/10/tlearn.pdf
 
 
-C TLearn Library
-=========
+#C TLearn Library
 
 The Original TLearn C library was written by:
 * Kim Plunkett
 * Jeffrey L. Elman
 
-Contributors
-=========
+#Contributors
+
 
 * Joseph Wilk [blog](http://blog.josephwilk.net) | [twitter](http://twitter.com/josephwilk)
 
-License
-=========
+#License
 
 (The MIT License)
 
