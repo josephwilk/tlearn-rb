@@ -63,72 +63,72 @@ Configuring TLearn (What the heck does all that config mean?)
 
 Yes, its complicated configuring this thing. Lets work through the different configuration options:
 
-`#Total number of nodes in the network (not counting input).
-:number_of_nodes => 86`
+    #Total number of nodes in the network (not counting input).
+    :number_of_nodes => 86
 
-`#The nodes that are used for output.
-:'output_nodes' => 41..46`
+    #The nodes that are used for output.
+    :'output_nodes' => 41..46
 
-`nodes 1-10 are linear.
-:linear_nodes => 1..10`
+    nodes 1-10 are linear.
+    :linear_nodes => 1..10
 
-`#nodes 1-10 are bipolar.
-:bipolar_nodes => 1..10`
+    #nodes 1-10 are bipolar.
+    :bipolar_nodes => 1..10
 
-`#weights between nodes will not exceed 1.00
-:weight_limit => 1.00`
+    #weights between nodes will not exceed 1.00
+    :weight_limit => 1.00
 
 <h4>Connections</h4>
 Here we specify how all of our nodes are connected, the architecture of the neural network. 
 
 We use ranges to specify connections between nodes:
 
-`1..3 => 4..6`
+    1..3 => 4..6
 
 Indicates connections:
 
-`node 1 <- node 4 
-node 1 <- node 5
-node 1 <- node 6
+    node 1 <- node 4 
+    node 1 <- node 5
+    node 1 <- node 6
 
-node 2 <- node 4
-node 2 <- node 5
-node 2 <- node 6
+    node 2 <- node 4
+    node 2 <- node 5
+    node 2 <- node 6
 
-node 3 <- node 4
-node 3 <- node 5
-node 3 <- node 6`
+    node 3 <- node 4
+    node 3 <- node 5
+    node 3 <- node 6
 
 Note that the nodes specified first (1..3) are the destination nodes, the second nodes (4..6) are the source nodes. The sources nodes feed into the destination nodes.
 
 <p>Make sure you feed the input nodes into the network.</p>
 
-`#1-6 nodes are fed input nodes 1-10.
-1..6 => i1..i10`
+    #1-6 nodes are fed input nodes 1-10.
+    1..6 => i1..i10
 
 <p>We can also add constraints to the different connections:</p>
-`#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
-1..6 => [7..9, {:min => 1, :max => 10}]`
+    #nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
+    1..6 => [7..9, {:min => 1, :max => 10}]
 
-`#nodes 1-6 are fed from node 0 (node 0 is always the bias node).
-1..6 => 0`
+    #nodes 1-6 are fed from node 0 (node 0 is always the bias node).
+    1..6 => 0
 
-`#nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
-1..6 => [7..10, :fixed]`
+    #nodes 1-6 connections with nodes 7-10 are fixed at initiation values and will not change throughout learning.
+    1..6 => [7..10, :fixed]
 
-`#nodes 1-6 connections with nodes 7-10 are fixed at 2 and will not change throughout learning.
-1..6 => [7..9, {:min => 2, :max => 2}]`
+    #nodes 1-6 connections with nodes 7-10 are fixed at 2 and will not change throughout learning.
+    1..6 => [7..9, {:min => 2, :max => 2}]
 
-`#1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
-1..3 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one']`
+    #1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
+    1..3 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one']
 
 one_to_one changes the way connections are mapped. Instead of one node mapping to every other node we have a 1-1 mapping between nodes:
 
 For example:
-`node 1 -> node 7
-mode 2 -> node 8
-node 3 -> node 9`
 
+    node 1 -> node 7
+    mode 2 -> node 8
+    node 3 -> node 9
 
 There is also the TLearn manual if you want read more:
 
