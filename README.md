@@ -78,8 +78,36 @@ Yes, its complicated configuring this thing. Lets work through the different con
 <pre>#nodes 1-10 are bipolar.
 :bipolar_nodes => 1..10</pre>
 
-<h4>Connections(how nodes connect to each other):</h4>
+<h4>Connections</h4>
 
+Here we specify how all of our nodes are connected, the architecture of the neural network. 
+
+We use ranges to specify connections between nodes:
+
+<pre>1..3 => 4..6</pre>
+
+Indicates connections:
+
+<pre>node 1 <- node 4 
+node 1 <- node 5
+node 1 <- node 6
+
+node 2 <- node 4
+node 2 <- node 5
+node 2 <- node 6
+
+node 3 <- node 4
+node 3 <- node 5
+node 3 <- node 6</pre>
+
+Note that the nodes specified first (1..3) are the destination nodes, the second nodes (4..6) are the source nodes. The sources nodes feed into the destination nodes.
+
+<p>Make sure you feed the input nodes into the network.</p>
+
+<pre>#1-6 nodes are fed input nodes 1-10.
+1..6 => i1..i10</pre> 
+
+<p>We can also add constraints to the different connections:</p>
 <pre>#nodes 1-6 connections with nodes 7-9 will have weights never less than 1 or greater than 10.
 1..6 => [7..9, {:min => 1, :max => 10}]</pre>
 
@@ -93,22 +121,15 @@ Yes, its complicated configuring this thing. Lets work through the different con
 1..6 => [7..9, {:min => 2, :max => 2}] </pre>
 
 <pre>#1-6 nodes connections with nodes from 7-9 are fixed at weight 1. 
-1..6 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one'] </pre>
+1..3 => [7..9, {:min => 1.0, :max => 1.0}, :fixed, :'one_to_one'] </pre>
 
-one_to_one means:
+:one_to_one changes the way connections are mapped. Instead of one node mapping to every other node we have a 1-1 mapping between nodes:
 
-* Node 1 is fed from node 7,
-* Node 2 is fed from node 8
-* Node 3 is feed from node 9.
-
-The normal case (without one-to-one) is:
-
-* Node 1 is fed from 7-9
-* Node 2 is fed from 7-9
-* Node 3 is fed from 7-9
- 
-<pre>#1-6 nodes are fed input nodes 1-10.
-1..6 => i1..i10</pre> 
+For example:
+<pre>node 1 -> node 7
+mode 2 -> node 8
+node 3 -> node 9
+</pre>
 
 
 There is also the TLearn manual if you want read more:
