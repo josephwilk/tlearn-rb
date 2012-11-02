@@ -130,24 +130,18 @@ int run_training(nsweeps, file_path, current_weights_output)
   char *file_path;
   float *current_weights_output;
 {
-  int  argc = 1;
-  char *argv[argc];
-  argv[0] = "tlearn";
   int status;
-
-
   int learning = 1;
   int loadflag = 0;
+  int verify = 0;
   
   backprop = 0;
-  status = run(argc,argv, learning,loadflag, nsweeps, file_path, backprop, current_weights_output);
+  status = run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
 
-int run_fitness(argc,argv, nsweeps,file_path, current_weights_output)
-  int  argc;
-  char  **argv;
+int run_fitness(nsweeps,file_path, current_weights_output)
   long nsweeps;
   char *file_path;
   float *current_weights_output;
@@ -156,15 +150,16 @@ int run_fitness(argc,argv, nsweeps,file_path, current_weights_output)
   backprop = 1;
   char weights[255];
   
-  strcpy(weights,file_path);
+  strcpy(weights, file_path);
   strcat(weights, ".wts");
   strcpy(loadfile,weights);
-  
   
   int learning = 0;
   int loadflag = 1;
   
-  status = run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_weights_output);
+  int verify = 1;
+  
+  status = run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
@@ -233,11 +228,10 @@ void cleanup_horrid_globals(){
 	start = 1;
 }
 
-int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_weights_output)
-  int  argc;
-  char  **argv;
+int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output)
   int learning;
   int loadflag;
+  int verify;
   long nsweeps;
   char *file_path;
   int backprop;
@@ -267,7 +261,7 @@ int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_wei
   int  nticks = 1;  /* number of internal clock ticks per input */
   int  ticks = 0;  /* counter for ticks */
   int  reset = 0;  /* flag for resetting net */
-  int  verify = 0;  /* flag for printing output values */
+
   int  probe = 0;  /* flag for printing selected node values */
   int  command = 1;  /* flag for writing to .cmd file */
   int  iflag = 0;  /* flag for -I */
@@ -291,10 +285,6 @@ int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_wei
 
   FILE  *cmdfp;
 
-#ifdef  THINK_C
-  argc = ccommand(&argv);
-#endif  /* THINK_C */
-
   signal(SIGINT, intr);
 #ifndef ibmpc
 #ifndef  THINK_C
@@ -311,56 +301,6 @@ int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_wei
   root[0] = 0;
   strcpy(root, file_path);
 
-  while ((c = getopt(argc, argv, "f:hil:m:n:r:s:tC:E:ILM:PpRS:TU:VvXB:H:D:")) != EOF) {
-    switch (c) {
-      case 'l':
-        break;
-      case 'V':
-      case 'v':
-        verify = 1;
-        break;
-      case 'X':
-        rflag = 1;
-        break;
-      case 'E':
-        rms_report = (long) atol(optarg);
-        break;
-      case 'I':
-        iflag = 1;
-        break;
-      case 'M':
-        criterion = (float) atof(optarg);
-        break;
-      case 'R':
-        randomly = 1;
-        break;
-      case 'S':
-        seed = atoi(optarg);
-        break;
-      case 'T':
-        tflag = 1;
-        break;
-      case 'U':
-        umax = atol(optarg);
-        break;
-      case 'B':
-        init_bias = atof(optarg);
-        break;
-      /*
-       * if == 1, use cross-entropy as error;
-       * if == 2, also collect cross-entropy stats.
-       */
-      case 'H':
-        ce = atoi(optarg);
-        break;
-      case '?':
-      case 'h':
-      default:
-        usage();
-        return(2);
-      break;
-    }
-  }
   if (nsweeps == 0){
     perror("ERROR: No -s specified");
     return(1);
@@ -372,26 +312,6 @@ int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_wei
     perror("ERROR: No fileroot specified");
     return(1);
   }
-
-  if (command){
-    sprintf(cmdfile, "%s.cmd", root);
-    cmdfp = fopen(cmdfile, "a");
-    if (cmdfp == NULL) {
-      perror("ERROR: Can't open .cmd file");
-      return(1);
-    }
-    for (i = 1; i < argc; i++)
-      fprintf(cmdfp,"%s ",argv[i]);
-    fprintf(cmdfp,"\n");
-    fflush(cmdfp);
-  }
-
-#ifndef  THINK_C
-  sprintf(cmdfile, "%s.pid", root);
-  fpid = fopen(cmdfile, "w");
-  fprintf(fpid, "%d\n",  getpid());
-  fclose(fpid);
-#endif  /* THINK_C */
 
   sprintf(cfile, "%s.cf", root);
   cfp = fopen(cfile, "r");
@@ -546,9 +466,6 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
 }
 
 static VALUE tlearn_fitness(VALUE self, VALUE config) {
-  int  tlearn_args_count = 4;
-  char *tlearn_args[tlearn_args_count];
-
   VALUE ruby_array       = rb_ary_new();
   VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
 
@@ -556,20 +473,11 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   long nsweeps       = NUM2DBL(sweeps_value);
 
   char *file_root        = StringValueCStr(file_root_value);
-  char weights[strlen(file_root) + strlen(".wts")];
-
   float *result_weights; 
-
-  strcpy(weights, file_root);
-
-  tlearn_args[0] = "tlearn_fitness";
-  tlearn_args[1] = "-l";
-  tlearn_args[2] = strcat(weights, ".wts");
-  tlearn_args[3] = "-V";
 
   float current_weights_output[6];
 
-  int failure = run_fitness(tlearn_args_count, tlearn_args, nsweeps, file_root, current_weights_output);
+  int failure = run_fitness(nsweeps, file_root, current_weights_output);
 
   post_cleanup();
 
