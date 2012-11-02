@@ -135,13 +135,17 @@ int run_training(nsweeps, file_path, current_weights_output)
   argv[0] = "tlearn";
   int status;
 
+
+  int learning = 1;
+  int loadflag = 0;
+  
   backprop = 0;
-  status = run(argc,argv, nsweeps, file_path, backprop, current_weights_output);
+  status = run(argc,argv, learning,loadflag, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
 
-int run_fitness(argc,argv, nsweeps, file_path, current_weights_output)
+int run_fitness(argc,argv, nsweeps,file_path, current_weights_output)
   int  argc;
   char  **argv;
   long nsweeps;
@@ -150,7 +154,17 @@ int run_fitness(argc,argv, nsweeps, file_path, current_weights_output)
 {
   int status;
   backprop = 1;
-  status = run(argc,argv, nsweeps, file_path, backprop, current_weights_output);
+  char weights[255];
+  
+  strcpy(weights,file_path);
+  strcat(weights, ".wts");
+  strcpy(loadfile,weights);
+  
+  
+  int learning = 0;
+  int loadflag = 1;
+  
+  status = run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
@@ -213,15 +227,17 @@ void cleanup_horrid_globals(){
     data = 0;
     ngroups = 0;
     root[0] = 0;
-    loadfile[0] = 0;
+    //loadfile[0] = 0;
 
 	otarget = 0;
 	start = 1;
 }
 
-int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
+int run(argc,argv, learning, loadflag, nsweeps, file_path, backprop, current_weights_output)
   int  argc;
   char  **argv;
+  int learning;
+  int loadflag;
   long nsweeps;
   char *file_path;
   int backprop;
@@ -250,12 +266,10 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
   int  k;
   int  nticks = 1;  /* number of internal clock ticks per input */
   int  ticks = 0;  /* counter for ticks */
-  int  learning = 1;  /* flag for learning */
   int  reset = 0;  /* flag for resetting net */
   int  verify = 0;  /* flag for printing output values */
   int  probe = 0;  /* flag for printing selected node values */
   int  command = 1;  /* flag for writing to .cmd file */
-  int  loadflag = 0;  /* flag for loading initial weights from file */
   int  iflag = 0;  /* flag for -I */
   int  tflag = 0;  /* flag for -T */
   int  rflag = 0;  /* flag for -x */
@@ -299,38 +313,9 @@ int run(argc,argv, nsweeps, file_path, backprop, current_weights_output)
 
   while ((c = getopt(argc, argv, "f:hil:m:n:r:s:tC:E:ILM:PpRS:TU:VvXB:H:D:")) != EOF) {
     switch (c) {
-      case 'C':
-        check = (long) atol(optarg);
-        ctime = check;
-        break;
-      case 'i':
-        command = 0;
-        break;
       case 'l':
-        loadflag = 1;
-        strcpy(loadfile,optarg);
-        break;
-      case 'm':
-        momentum = (float) atof(optarg);
-        break;
-      case 'n':
-        nticks = (int) atoi(optarg);
-        break;
-      case 'P':
-        learning = 0;
-        /* drop through deliberately */
-      case 'p':
-        probe = 1;
-        break;
-      case 'r':
-        rate = (double) atof(optarg);
-        break;
-      case 't':
-        teacher = 1;
         break;
       case 'V':
-        learning = 0;
-        /* drop through deliberately */
       case 'v':
         verify = 1;
         break;
