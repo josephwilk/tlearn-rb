@@ -122,8 +122,6 @@ extern int load_wts();
 extern int save_wts();
 extern int act_nds();
 
-extern int optind;
-
 
 int run_training(nsweeps, file_path, current_weights_output)
   long nsweeps;
@@ -155,8 +153,7 @@ int run_fitness(nsweeps,file_path, current_weights_output)
   strcpy(loadfile,weights);
   
   int learning = 0;
-  int loadflag = 1;
-  
+  int loadflag = 1; 
   int verify = 1;
   
   status = run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output);
@@ -188,7 +185,6 @@ void post_cleanup(){
 }
 
 void cleanup_horrid_globals(){
-    optind  = 1;
     sweep = 0;
     tsweeps = 0;
     rate = .1;
@@ -222,8 +218,6 @@ void cleanup_horrid_globals(){
     data = 0;
     ngroups = 0;
     root[0] = 0;
-    //loadfile[0] = 0;
-
 	otarget = 0;
 	start = 1;
 }
