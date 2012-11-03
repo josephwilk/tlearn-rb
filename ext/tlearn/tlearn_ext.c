@@ -131,10 +131,9 @@ int run_training(nsweeps, file_path, current_weights_output)
   int status;
   int learning = 1;
   int loadflag = 0;
-  int verify = 0;
   
   backprop = 0;
-  status = run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output);
+  status = run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
@@ -154,9 +153,8 @@ int run_fitness(nsweeps,file_path, current_weights_output)
   
   int learning = 0;
   int loadflag = 1; 
-  int verify = 1;
   
-  status = run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output);
+  status = run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output);
 
   return(status);
 }
@@ -222,10 +220,9 @@ void cleanup_horrid_globals(){
 	start = 1;
 }
 
-int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weights_output)
+int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output)
   int learning;
   int loadflag;
-  int verify;
   long nsweeps;
   char *file_path;
   int backprop;
@@ -256,7 +253,6 @@ int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weight
   int  ticks = 0;  /* counter for ticks */
   int  reset = 0;  /* flag for resetting net */
 
-  int  probe = 0;  /* flag for printing selected node values */
   int  command = 1;  /* flag for writing to .cmd file */
   int  iflag = 0;  /* flag for -I */
   int  tflag = 0;  /* flag for -T */
@@ -276,21 +272,6 @@ int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weight
 
   char  cmdfile[128];  /* filename for logging runs of program */
   char  cfile[128];  /* filename for .cf file */
-
-  FILE  *cmdfp;
-
-  signal(SIGINT, intr);
-#ifndef ibmpc
-#ifndef  THINK_C
-  signal(SIGHUP, intr);
-  signal(SIGQUIT, intr);
-  signal(SIGKILL, intr);
-#endif  /* THINK_C */
-#endif
-
-#ifndef ibmpc
-  exp_init();
-#endif
 
   root[0] = 0;
   strcpy(root, file_path);
@@ -320,12 +301,14 @@ int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weight
   get_connections();
   get_special();
   
-  if (!seed)
+  if (!seed){
     seed = time((time_t *) NULL);
+  }
   srandom(seed);
 
-  if (loadflag)
+  if (loadflag){
     load_wts();
+  }
   else {
     for (i = 0; i < nn; i++){
       w = *(wt + i);
@@ -403,26 +386,11 @@ int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weight
         comp_deltas(pold,pnew,wt,dwt,zold,znew,error);
       if (learning && (backprop == 1))
         comp_backprop(wt,dwt,zold,zmem,target,error,linput);
-
-      if (probe)
-        print_nodes(zold);
     }
-    if (verify){
+    if (learning == 0){
       for (i = 0; i < no; i++){
         current_weights_output[i] = zold[ni+outputs[i]];
       }
-    }
-    if (rms_report && (++rtime >= rms_report)){
-      rtime = 0;
-      if (ce == 2)
-        print_error(&ce_err);
-      else
-        print_error(&err);
-    }
-
-    if (check && (++ctime >= check)){
-      ctime = 0;
-      save_wts();
     }
 
     if (++ttime >= tmax)
@@ -438,7 +406,6 @@ int run(learning, loadflag, verify, nsweeps, file_path, backprop, current_weight
     save_wts();
   
   return(0);
-
 }
 
 /* -- Ruby interface -- */
