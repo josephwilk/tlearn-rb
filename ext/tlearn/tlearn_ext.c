@@ -253,7 +253,6 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
   int  ticks = 0;   /* counter for ticks */
   int  reset = 0;   /* flag for resetting net */
 
-  int  command = 1;  /* flag for writing to .cmd file */
   int  iflag = 0;    /* flag for -I */
   int  tflag = 0;    /* flag for -T */
   int  rflag = 0;    /* flag for -x */
