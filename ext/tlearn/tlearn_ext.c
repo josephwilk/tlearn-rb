@@ -239,8 +239,8 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
 
   long  ttime = 0;  /* number of sweeps since time = 0 */
   long  utime = 0;  /* number of sweeps since last update_weights */
-  long  tmax = 0;  /* maximum number of sweeps (given in .data) */
-  long  umax = 0;  /* update weights every umax sweeps */
+  long  tmax = 0;   /* maximum number of sweeps (given in .data) */
+  long  umax = 0;   /* update weights every umax sweeps */
   long  rtime = 0;  /* number of sweeps since last rms_report */
   long  check = 0;  /* output weights every "check" sweeps */
   long  ctime = 0;  /* number of sweeps since last check */
@@ -250,16 +250,16 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
   int  j;
   int  k;
   int  nticks = 1;  /* number of internal clock ticks per input */
-  int  ticks = 0;  /* counter for ticks */
-  int  reset = 0;  /* flag for resetting net */
+  int  ticks = 0;   /* counter for ticks */
+  int  reset = 0;   /* flag for resetting net */
 
   int  command = 1;  /* flag for writing to .cmd file */
-  int  iflag = 0;  /* flag for -I */
-  int  tflag = 0;  /* flag for -T */
-  int  rflag = 0;  /* flag for -x */
-  int  seed = 0;  /* seed for random() */
+  int  iflag = 0;    /* flag for -I */
+  int  tflag = 0;    /* flag for -T */
+  int  rflag = 0;    /* flag for -x */
+  int  seed = 0;     /* seed for random() */
 
-  float  err = 0.;  /* cumulative ss error */
+  float  err = 0.;     /* cumulative ss error */
   float  ce_err = 0.;  /* cumulate cross_entropy error */
 
   float  *w;
@@ -360,22 +360,24 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
 
   nsweeps += tsweeps;
   for (sweep = tsweeps; sweep < nsweeps; sweep++){
-
     for (ticks = 0; ticks < nticks; ticks++){
 
       update_reset(ttime,ticks,rflag,&tmax,&reset);
 
       if (reset){
-        if (backprop == 0)
+        if (backprop == 0){
           reset_network(zold,znew,pold,pnew);
-        else
+        }
+		else{
           reset_bp_net(zold,znew);
+	    }
       }
 
       update_inputs(zold,ticks,iflag,&tmax,&linput);
 
-      if (learning || teacher || (rms_report != 0))
+      if (learning || teacher || (rms_report != 0)){
         update_targets(target,ttime,ticks,tflag,&tmax);
+	  }
 
       act_nds(zold,zmem,znew,wt,linput,target);
 
@@ -392,17 +394,18 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
       }
     }
 
-    if (++ttime >= tmax)
+    if (++ttime >= tmax){
       ttime = 0;
-
+    }
     if (learning && (++utime >= umax)){
       utime = 0;
       update_weights(wt,dwt,winc);
     }
 
   }
-  if (learning)
+  if (learning){
     save_wts();
+  }
   
   return(0);
 }
