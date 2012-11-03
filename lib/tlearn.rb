@@ -8,7 +8,15 @@ require 'tlearn/run_tlearn'
 require 'tlearn/run'
 
 def tlearn_extension
-  File.exists?(File.dirname(__FILE__) + '/tlearn.so') ? 'tlearn.so' : 'tlearn.bundle'
+  if File.exists?(File.dirname(__FILE__) + '/tlearn.so')
+    'tlearn.so'
+  elsif File.exists?(File.dirname(__FILE__) + '/tlearn.bundle')
+    'tlearn.bundle'
+  elsif File.exists?(File.dirname(__FILE__) + '/tlearn/tlearn.so')
+    'tlearn/tlearn.so'
+  elsif File.exists?(File.dirname(__FILE__) + '/tlearn/tlearn.bundle')
+    'tlearn/tlearn.bundle'
+  end
 end
 
 require tlearn_extension
