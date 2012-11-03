@@ -270,7 +270,6 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
 
   struct  cf  *ci;
 
-  char  cmdfile[128];  /* filename for logging runs of program */
   char  cfile[128];  /* filename for .cf file */
 
   root[0] = 0;
