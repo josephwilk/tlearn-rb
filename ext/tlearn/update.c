@@ -162,6 +162,8 @@ update_inputs(aold,tick,flag,maxtime,local)
 				}
 			}
 		}
+
+		fclose(fp);
 	}
 
 

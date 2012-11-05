@@ -57,6 +57,12 @@ describe 'TLearnExt' do
           weight.should >= 0 && weight.should <= 1
         end
       end
+
+      context "when run many times" do
+        it "should not leak" do
+          10000.times {TLearnExt.fitness({:sweeps => number_of_sweeps, :file_root => example_file_root})}
+        end
+      end
     end
 
     context "with an invalid file root" do

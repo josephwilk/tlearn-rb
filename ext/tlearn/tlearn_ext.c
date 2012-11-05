@@ -212,7 +212,6 @@ void cleanup_horrid_globals(){
     winc = 0;
     target = 0;
     error = 0;
-    cfp = 0;
     data = 0;
     ngroups = 0;
     root[0] = 0;
@@ -232,7 +231,6 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
   cleanup_horrid_globals();
 
   FILE  *fopen();
-  FILE  *fpid;
   extern  char *optarg;
   extern  float rans();
   extern  time_t time();
@@ -299,6 +297,8 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
   get_connections();
   get_special();
   
+  fclose(cfp);
+
   if (!seed){
     seed = time((time_t *) NULL);
   }

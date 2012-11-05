@@ -109,6 +109,8 @@ load_wts()
 		}
 	}
 
+	fclose(fp);
+
 	return;
 
 }
