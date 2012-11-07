@@ -418,7 +418,7 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   VALUE file_root_value  = rb_hash_aref(config, ID2SYM(rb_intern("file_root")));
   char *file_root        = StringValueCStr(file_root_value);
 
-  float current_weights_output[6];
+  float current_weights_output[255];
   
   int result = run_training(nsweeps, file_root, current_weights_output);
 
@@ -437,7 +437,7 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   char *file_root        = StringValueCStr(file_root_value);
   float *result_weights; 
 
-  float current_weights_output[6];
+  float current_weights_output[255];
 
   int failure = run_fitness(nsweeps, file_root, current_weights_output);
 
@@ -446,7 +446,7 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   if(failure == 0){
     float weight;
     int result_index;
-    for(result_index = 0; result_index < 6; result_index++){
+    for(result_index = 0; result_index < no; result_index++){
       weight = current_weights_output[result_index];
       rb_ary_store(ruby_array, result_index, rb_float_new(weight));
     }
