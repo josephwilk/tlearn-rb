@@ -77,7 +77,7 @@ module TLearn
       special_config = {}
       special_config[:linear] = @config[:linear]
       special_config[:weight_limit] = @config[:weight_limit]
-      special_config[:selected] = @config[:selected]
+      special_config[:selected] = input_to_config_string(1..@config[:number_of_nodes])
 
       config = <<EOS
 NODES:

@@ -28,7 +28,6 @@ require 'tlearn'
 tlearn = TLearn::Run.new(:number_of_nodes => 86,
                          :output_nodes    => 41..46,
                          :linear          => 47..86,
-						 :selected        => 1..86,
                          :weight_limit    => 1.00,
                          :connections     => [{1..81   => 0},
                                               {1..40   => :i1..:i77},

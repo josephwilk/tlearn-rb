@@ -9,7 +9,6 @@ def example_config
    :output_nodes    => 41..46,
    :linear          => 47..86,
    :weight_limit    => 1.00,
-   :selected        => 1..86,
    :connections     => [{1..81   => 0},
                         {1..40   => :i1..:i77},
                         {41..46  => 1..40},
