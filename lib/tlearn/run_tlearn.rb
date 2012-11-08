@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module TLearn
   class RunTLearn
     class UntrainedError < Exception; end;

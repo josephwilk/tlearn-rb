@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'fakefs/spec_helpers'
+require 'fileutils'
 
 module TLearn
   describe Config do
