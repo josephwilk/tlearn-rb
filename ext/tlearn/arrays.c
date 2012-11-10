@@ -55,7 +55,16 @@ void free_arrays(){
     free(selects);
     free(outputs);
     free(linput);
-    free(wt);
+
+    int i = 0;
+	for (i = 0; i < nn; i++){
+	    free(*(wt + i));
+        free(*(dwt + i));
+        free(*(winc + i));
+        free(*(cinfo + i));
+	}
+
+	free(wt);
     free(dwt);
     free(winc);
     free(cinfo);
