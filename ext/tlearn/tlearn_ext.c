@@ -173,13 +173,9 @@ void post_cleanup(){
 	free(wt);
 	free(dwt);
 	free(winc);
-	free(target);
-	free(error);
+
 	free(pnew);
 	free(pold);
-
-	free(otarget);
-	free(data);
 }
 
 void cleanup_horrid_globals(){
@@ -210,13 +206,14 @@ void cleanup_horrid_globals(){
     wt = 0;
     dwt = 0;
     winc = 0;
-    target = 0;
-    error = 0;
-    data = 0;
+
+    pold = 0;
+
     ngroups = 0;
-    root[0] = 0;
-	otarget = 0;
-	start = 1;
+    wt = 0;
+    dwt = 0;
+    winc = 0;
+    start = 1;
 }
 
 int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output)
@@ -404,8 +401,16 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
   }
   if (learning){
     save_wts();
+	if(otarget != 0){
+	  free(otarget);
+	}
+	otarget = 0;
   }
   
+  free(error);
+  free(target);
+  free(data);
+
   return(0);
 }
 
