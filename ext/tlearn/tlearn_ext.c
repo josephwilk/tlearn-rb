@@ -47,81 +47,83 @@ configuration is defined in a ".cf" file documented in tlearn.man.
 #define srandom(x) srand(x)
 #endif  /* THINK_C */
 
-extern int  nn;    /* number of nodes */
-extern int  ni;    /* number of inputs */
-extern int  no;    /* number of outputs */
-extern int  nt;    /* nn + ni + 1 */
-extern int  np;    /* ni + 1 */
 
-extern struct  cf {
-   int  con;  /* connection flag */
-   int  fix;  /* fixed-weight flag */
-   int  num;  /* group number */
-   int  lim;  /* weight-limits flag */
-   float  min;  /* weight minimum */
-   float  max;  /* weight maximum */
+
+int	nn;		/* number of nodes */
+int	ni;		/* number of inputs */
+int	no;		/* number of outputs */
+int	nt;		/* nn + ni + 1 */
+int	np;		/* ni + 1 */
+
+struct	cf {
+	int	con;	/* connection flag */
+	int	fix;	/* fixed-weight flag */
+	int	num;	/* group number */
+	int	lim;	/* weight-limits flag */
+	float	min;	/* weight minimum */
+	float	max;	/* weight maximum */
 };
 
-extern struct  nf {
-   int  func;  /* activation function type */
-   int  dela;  /* delay flag */
-   int  targ;  /* target flag */
- };
+struct	nf {
+	int	func;	/* activation function type */
+	int	dela;	/* delay flag */
+	int	targ;	/* target flag */
+};
 
-extern struct  cf  **cinfo;  /* (nn x nt) connection info */
-extern struct  nf  *ninfo;   /* (nn) node activation function info */
+struct	cf	**cinfo;	/* (nn x nt) connection info */
+struct	nf	*ninfo;		/* (nn) node activation function info */
 
-extern int  *outputs;    /* (no) indices of output nodes */
+int	*outputs;	/* (no) indices of output nodes */
+int	*selects;	/* (nn+1) nodes selected for probe printout */
+int	*linput;	/* (ni) localist input array */
 
-extern int  *selects;    /* (nn+1) nodes selected for probe printout */
-extern int  *linput;     /* (ni) localist input array */
+extern float   *otarget;
 
-extern float *otarget;
-
-extern float  *znew;     /* (nt) inputs and activations at time t+1 */
-extern float  *zold;     /* (nt) inputs and activations at time t */
-extern float  *zmem;     /* (nt) inputs and activations at time t */
-extern float  **wt;      /* (nn x nt) weight TO node i FROM node j*/ 
-extern float  **dwt;     /* (nn x nt) delta weight at time t */
-extern float  **winc;    /* (nn x nt) accumulated weight increment*/
-extern float  *target;   /* (no) output target values */
-extern float  *error;    /* (nn) error = (output - target) values */
-extern float  ***pnew;   /* (nn x nt x nn) p-variable at time t+1 */
-extern float  ***pold;   /* (nn x nt x nn) p-variable at time t */
-
-extern float  rate;         /* learning rate */
-extern float  momentum;     /* momentum */
-extern float  weight_limit; /* bound for random weight init */
-extern float  criterion;    /* exit program when rms error is less than this */
-extern float  init_bias;    /* possible offset for initial output biases */
+float	*znew;		/* (nt) inputs and activations at time t+1 */
+float	*zold;		/* (nt) inputs and activations at time t */
+float	*zmem;		/* (nt) inputs and activations at time t */
+float	**wt;		/* (nn x nt) weight TO node i FROM node j*/ 
+float	**dwt;		/* (nn x nt) delta weight at time t */
+float	**winc;		/* (nn x nt) accumulated weight increment*/
+float	*target;	/* (no) output target values */
+float	*error;		/* (nn) error = (output - target) values */
+float	***pnew;	/* (nn x nt x nn) p-variable at time t+1 */
+float	***pold;	/* (nn x nt x nn) p-variable at time t */
 
 extern float	*data;        /* Required to reset the .data file */
 
-extern long  sweep;       /* current sweep */
-extern long  tsweeps;     /* total sweeps to date */
-extern long  rms_report;  /* output rms error every "report" sweeps */
 
-extern int  ngroups;   /* number of groups */
+float	rate = .1;	/* learning rate */
+float	momentum = 0.;	/* momentum */
+float	weight_limit = 1.;	/* bound for random weight init */
+float	criterion = 0.;	/* exit program when rms error is less than this */
+float	init_bias = 0.;	/* possible offset for initial output biases */
 
-extern int  backprop;  /* flag for standard back propagation (the default) */
-extern int  teacher;   /* flag for feeding back targets */
-extern int  localist;  /* flag for speed-up with localist inputs */
-extern int  randomly;  /* flag for presenting inputs in random order */
-extern int  limits;    /* flag for limited weights */
-extern int  ce;        /* flag for cross_entropy */
+long	sweep = 0;	/* current sweep */
+long	tsweeps = 0;	/* total sweeps to date */
+long	rms_report = 0;	/* output rms error every "report" sweeps */
+
+int	ngroups = 0;	/* number of groups */
+
+int	backprop = 1;	/* flag for standard back propagation (the default) */
+int	teacher = 0;	/* flag for feeding back targets */
+int	localist = 0;	/* flag for speed-up with localist inputs */
+int	randomly = 0;	/* flag for presenting inputs in random order */
+int	limits = 0;	/* flag for limited weights */
+int	ce = 0;		/* flag for cross_entropy */
+
 extern int start;
 
-extern char  root[128];  /* root filename for .cf, .data, .teach, etc.*/
-extern char  loadfile[128];  /* filename for weightfile to be read in */
+char	root[128];	/* root filename for .cf, .data, .teach, etc.*/
+char	loadfile[128];	/* filename for weightfile to be read in */
 
-extern FILE  *cfp;    /* file pointer for .cf file */
+FILE	*cfp;		/* file pointer for .cf file */
 
-extern void intr();
+void intr();
 
 extern int load_wts();
 extern int save_wts();
 extern int act_nds();
-
 
 int run_training(nsweeps, file_path, current_weights_output)
   long nsweeps;
