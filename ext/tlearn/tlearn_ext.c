@@ -183,8 +183,6 @@ void cleanup_horrid_globals(){
     dwt = 0;
     winc = 0;
 
-    pold = 0;
-
     ngroups = 0;
     start = 1;
 }
