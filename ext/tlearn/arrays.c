@@ -197,21 +197,19 @@ make_arrays()
 }
 
 free_parrays(){
-    int i = 0;
-    int j = 0;
+  int i = 0;
+  int j = 0;
+  for (i = 0; i < nn; i++){
+    for (j = 0; j < nt; j++){
+      free(*(*(pold + i) + j));
+      free(*(*(pnew + i) + j));
+    }
+    free(*(pold + i));
+    free(*(pnew + i));
+  }
 
-    /* TODO: Memory leaks here. But freeing fails due to freeing non-allocated */
-    // for (i = 0; i < nn; i++){
-    //     free(*(pold + i));
-    //     free(*(pnew + i));
-    //     for (j = 0; j < nt; j++){
-    //         free(*(*(pold + i) + j));
-    //         free(*(*(pnew + i) + j));
-    //     }
-    // }
-
-	free(pnew);
-	free(pold);
+  free(pnew);
+  free(pold);
 }
 
 make_parrays()
