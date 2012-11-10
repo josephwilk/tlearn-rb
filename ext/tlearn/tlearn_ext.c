@@ -161,25 +161,6 @@ int run_fitness(nsweeps,file_path, current_weights_output)
   return(status);
 }
 
-void post_cleanup(){
-	free(outputs);
-	free(selects);
-	free(linput);
-
-	free(ninfo);
-	free(cinfo);
-
-	free(znew);
-	free(zold);
-	free(zmem);
-	free(wt);
-	free(dwt);
-	free(winc);
-
-	free(pnew);
-	free(pold);
-}
-
 void cleanup_horrid_globals(){
     sweep = 0;
     tsweeps = 0;
@@ -195,14 +176,7 @@ void cleanup_horrid_globals(){
     randomly = 0;
     limits = 0;
     ce = 0;
-    outputs = 0;
-    selects = 0;
-    linput = 0;
-    cinfo = 0;
-    ninfo = 0;
-    znew = 0;
-    zold = 0;
-    zmem = 0;
+
     pnew = 0;
     pold = 0;
     wt = 0;
@@ -212,9 +186,6 @@ void cleanup_horrid_globals(){
     pold = 0;
 
     ngroups = 0;
-    wt = 0;
-    dwt = 0;
-    winc = 0;
     start = 1;
 }
 
@@ -409,9 +380,13 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
 	otarget = 0;
   }
   
-  free(error);
-  free(target);
+  if(backprop == 0){
+    free_parrays();
+  }
+
   free(data);
+
+  free_arrays();
 
   return(0);
 }
@@ -429,8 +404,6 @@ static VALUE tlearn_train(VALUE self, VALUE config) {
   
   int result = run_training(nsweeps, file_root, current_weights_output);
 
-  post_cleanup();
-
   return rb_int_new(result);
 }
 
@@ -447,8 +420,6 @@ static VALUE tlearn_fitness(VALUE self, VALUE config) {
   float current_weights_output[255];
 
   int failure = run_fitness(nsweeps, file_root, current_weights_output);
-
-  post_cleanup();
 
   if(failure == 0){
     float weight;

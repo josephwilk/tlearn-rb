@@ -46,6 +46,21 @@ extern	float	*error;		/* (nn) error = (output - target) values */
 extern	float	***pnew;	/* (nn x nt x nn) p-variable at time t+1 */
 extern	float	***pold;	/* (nn x nt x nn) p-variable at time t */
 
+void free_arrays(){
+    free(error);
+    free(target);
+    free(zold);
+    free(zmem);
+    free(znew);
+    free(selects);
+    free(outputs);
+    free(linput);
+    free(wt);
+    free(dwt);
+    free(winc);
+    free(cinfo);
+    free(ninfo);
+}
 
 make_arrays()
 {
@@ -172,6 +187,11 @@ make_arrays()
 		}
 	}
 
+}
+
+free_parrays(){
+	free(pnew);
+	free(pold);
 }
 
 make_parrays()
