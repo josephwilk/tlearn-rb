@@ -86,7 +86,7 @@ float	**wt;		/* (nn x nt) weight TO node i FROM node j*/
 float	**dwt;		/* (nn x nt) delta weight at time t */
 float	**winc;		/* (nn x nt) accumulated weight increment*/
 float	*target;	/* (no) output target values */
-float	*error;		/* (nn) error = (output - target) values */
+float	*error_values; /* (nn) error = (output - target) values */
 float	***pnew;	/* (nn x nt x nn) p-variable at time t+1 */
 float	***pold;	/* (nn x nt x nn) p-variable at time t */
 
@@ -350,12 +350,12 @@ int run(learning, loadflag, nsweeps, file_path, backprop, current_weights_output
 
       act_nds(zold,zmem,znew,wt,linput,target);
 
-      comp_errors(zold,target,error,&err,&ce_err);
+      comp_errors(zold,target,error_values,&err,&ce_err);
 
       if (learning && (backprop == 0))
-        comp_deltas(pold,pnew,wt,dwt,zold,znew,error);
+        comp_deltas(pold,pnew,wt,dwt,zold,znew,error_values);
       if (learning && (backprop == 1))
-        comp_backprop(wt,dwt,zold,zmem,target,error,linput);
+        comp_backprop(wt,dwt,zold,zmem,target,error_values,linput);
     }
     if (learning == 0){
       for (i = 0; i < no; i++){

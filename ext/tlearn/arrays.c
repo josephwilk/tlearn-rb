@@ -42,12 +42,12 @@ extern	float	**wt;		/* (nn x nt) weight TO node i FROM node j*/
 extern	float	**dwt;		/* (nn x nt) delta weight at time t */
 extern	float	**winc;		/* (nn x nt) accumulated weight increment*/
 extern	float	*target;	/* (no) output target values */
-extern	float	*error;		/* (nn) error = (output - target) values */
+extern	float	*error_values; /* (nn) error = (output - target) values */
 extern	float	***pnew;	/* (nn x nt x nn) p-variable at time t+1 */
 extern	float	***pold;	/* (nn x nt x nn) p-variable at time t */
 
 void free_arrays(){
-    free(error);
+    free(error_values);
     free(target);
     free(zold);
     free(zmem);
@@ -91,8 +91,8 @@ make_arrays()
 		perror("target malloc failed");
 		exit(1);
 	}
-	error = (float *) malloc(nn * sizeof(float));
-	if (error == NULL){
+	error_values = (float *) malloc(nn * sizeof(float));
+	if (error_values == NULL){
 		perror("error malloc failed");
 		exit(1);
 	}
