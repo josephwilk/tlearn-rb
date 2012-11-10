@@ -1,4 +1,3 @@
-
 /* make_arrays() - malloc space for arrays */
 
 #include <stdio.h>
@@ -57,14 +56,13 @@ void free_arrays(){
     free(linput);
 
     int i = 0;
-	for (i = 0; i < nn; i++){
-	    free(*(wt + i));
-        free(*(dwt + i));
-        free(*(winc + i));
-        free(*(cinfo + i));
-	}
-
-	free(wt);
+    for (i = 0; i < nn; i++){
+      free(*(wt + i));
+      free(*(dwt + i));
+      free(*(winc + i));
+      free(*(cinfo + i));
+    }
+    free(wt);
     free(dwt);
     free(winc);
     free(cinfo);
