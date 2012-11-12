@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/josephwilk/tlearn-rb.png)](http://travis-ci.org/josephwilk/tlearn-rb)
 
-Ruby helping make tlearn neural network simulator sane(ish) (http://crl.ucsd.edu/innate/tlearn.html)
+Recurrent Neural Network library for Ruby which uses the tlearn neural network simulator(http://crl.ucsd.edu/innate/tlearn.html)
 
 To see an example run:
 
