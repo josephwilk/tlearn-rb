@@ -16,5 +16,4 @@ tmp
 .yardoc
 _yardoc
 doc/
-data/*
 lib/*.bundle
