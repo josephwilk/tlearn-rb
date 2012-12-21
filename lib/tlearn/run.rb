@@ -13,7 +13,6 @@ module TLearn
       
       if results
         results.each{|r| @out.puts(r.inspect)}
-        results
       else
         @out.puts("[Error] Training failed") 
       end
