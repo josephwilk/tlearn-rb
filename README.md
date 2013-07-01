@@ -6,8 +6,10 @@ Recurrent Neural Network library for Ruby which uses the tlearn neural network s
 
 To see an example run:
 
-`rake example:train
-rake example:fitness`
+```
+rake example:train
+rake example:fitness
+```
 
 # Seriously? Just use FANN!
 
