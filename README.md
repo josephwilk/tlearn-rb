@@ -131,7 +131,7 @@ For example:
 
 There is also the TLearn manual if you want read more:
 
-http://blog.josephwilk.net/wp-content/uploads/2012/10/tlearn.pdf
+http://blog.josephwilk.net/uploads/tlearn.pdf
 
 
 #C TLearn Library
