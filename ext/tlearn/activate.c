@@ -39,7 +39,7 @@ extern	int	backprop;	/* flag for back propagation */
 extern	int	localist;	/* flag for localist input */
 extern	int	teacher;	/* flag for feeding back target */
 
-act_nds(aold,amem,anew,awt,local,atarget)
+void act_nds(aold,amem,anew,awt,local,atarget)
 	float	*aold;
 	float	*amem;
 	float	*anew;

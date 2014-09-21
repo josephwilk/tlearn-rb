@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-main() {
+void main() {
 	double	f;
 	register int i;
 	float	x;

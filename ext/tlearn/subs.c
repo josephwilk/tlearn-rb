@@ -60,7 +60,7 @@ float rans(w)
 	return (((float)random() / max) * 2*w) - w;
 }
 
-exp_init()
+void exp_init()
 {
 #ifdef	EXP_TABLE
 	struct	stat statb;
@@ -83,7 +83,7 @@ exp_init()
 #endif	EXP_TABLE
 }
 
-print_nodes(aold)
+void print_nodes(aold)
 	float	*aold;
 {
 	int	i;
@@ -96,7 +96,7 @@ print_nodes(aold)
 
 }
 
-print_output(aold)
+void print_output(aold)
 	float	*aold;
 {
 	int	i;
@@ -108,7 +108,7 @@ print_output(aold)
 
 }
 
-print_error(e)
+void print_error(e)
 	float	*e;
 {
 	static	FILE	*fp;
@@ -145,7 +145,7 @@ print_error(e)
 	*e = 0.;
 }
 
-reset_network(aold,anew,apold,apnew)
+void reset_network(aold,anew,apold,apnew)
 	float	*aold;
 	float	*anew;
 	float	***apold;
@@ -186,7 +186,7 @@ reset_network(aold,anew,apold,apnew)
 	return;
 }
 
-reset_bp_net(aold,anew)
+void reset_bp_net(aold,anew)
 	float	*aold;
 	float	*anew;
 {

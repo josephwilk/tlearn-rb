@@ -56,7 +56,7 @@ extern	int	limits;		/* flag for limited weights */
 
 extern	float	weight_limit;	/* bound for random weight init */
 
-get_nodes()
+void get_nodes()
 {
 	int	i;
 
@@ -93,7 +93,7 @@ get_nodes()
 	np = 1 + ni;
 }
 
-get_outputs()
+void get_outputs()
 {
 	int	i;
 	int	j;
@@ -144,7 +144,7 @@ get_outputs()
 
 }
 
-get_connections()
+void get_connections()
 {
 	int	i;
 	int	j;
@@ -374,7 +374,7 @@ get_connections()
 
 }
 
-get_special()
+void get_special()
 {
 	char	buf[80];
 	char	tmp[80];
@@ -442,7 +442,7 @@ get_special()
 
 }
 
-get_str(fp,buf,str)
+void get_str(fp,buf,str)
 	FILE	*fp;
 	char	*buf;
 	char	*str;
@@ -456,7 +456,7 @@ get_str(fp,buf,str)
 	strcat(pbuf,str);
 }
 
-get_nums(str,nv,offset,vec)
+void get_nums(str,nv,offset,vec)
 	char	*str;
 	int	nv;
 	int	offset;
@@ -583,7 +583,7 @@ get_nums(str,nv,offset,vec)
 
 }
 
-parse_err()
+void parse_err()
 {
 	fprintf(stderr,"\nError in .cf file:\n\n");
 	fprintf(stderr,"%s\n\n",pbuf);
