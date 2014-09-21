@@ -28,7 +28,7 @@ int	optopt;
 char	*optarg;
 
 int
-getopt(argc, argv, opts)
+void getopt(argc, argv, opts)
 int	argc;
 char	**argv, *opts;
 {

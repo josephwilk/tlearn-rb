@@ -15,7 +15,7 @@ extern	char	loadfile[];	/* .wts file to start with */
 extern	char	root[];		/* root file name */
 
 
-save_wts()
+void save_wts()
 {
 
 	FILE	*fp;
@@ -64,7 +64,7 @@ save_wts()
 	return;
 }
 
-load_wts()
+void load_wts()
 {
 
 	FILE	*fp;

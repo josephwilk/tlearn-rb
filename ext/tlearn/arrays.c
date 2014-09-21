@@ -69,7 +69,7 @@ void free_arrays(){
     free(ninfo);
 }
 
-make_arrays()
+void make_arrays()
 {
 
 	int	i;
@@ -196,7 +196,7 @@ make_arrays()
 
 }
 
-free_parrays(){
+void free_parrays(){
   int i = 0;
   int j = 0;
   for (i = 0; i < nn; i++){
@@ -212,7 +212,7 @@ free_parrays(){
   free(pold);
 }
 
-make_parrays()
+void make_parrays()
 {
 
 	int	i;
