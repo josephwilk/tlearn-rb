@@ -3,11 +3,11 @@ module TLearn
     def initialize(data)
       @data = data
     end
-    
+
     def reset_points
       [0, 2]
     end
-    
+
     def data
       [@data]
     end
@@ -19,6 +19,5 @@ module TLearn
     def no_of_inputs
       @data_list.length
     end
-    
   end
 end
