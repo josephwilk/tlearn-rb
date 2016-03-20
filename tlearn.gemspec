@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'tlearn'
-  s.version = '0.0.8'
+  s.version = '0.0.9'
   s.summary = 'Ruby bindings for tlearn'
   s.authors = ["Joseph Wilk"]
   s.email = ["joe@josephwilk.net"]

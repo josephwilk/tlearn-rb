@@ -110,7 +110,7 @@ comp_errors(aold,atarget,aerror,e,ce_e)
 }
 
 
-comp_deltas(apold,apnew,awt,adwt,aold,anew,aerror)
+void comp_deltas(apold,apnew,awt,adwt,aold,anew,aerror)
 	float	***apold;
 	float	***apnew;
 	float	**awt;
@@ -215,7 +215,7 @@ comp_deltas(apold,apnew,awt,adwt,aold,anew,aerror)
 	return;
 }
 
-comp_backprop(awt,adwt,aold,amem,atarget,aerror,local)
+void comp_backprop(awt,adwt,aold,amem,atarget,aerror,local)
 	float	**awt;
 	float	**adwt;
 	float	*aold;
@@ -400,5 +400,3 @@ comp_backprop(awt,adwt,aold,amem,atarget,aerror,local)
 
 	return;
 }
-
-

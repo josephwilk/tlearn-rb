@@ -56,6 +56,156 @@ extern	int	limits;		/* flag for limited weights */
 
 extern	float	weight_limit;	/* bound for random weight init */
 
+void parse_err()
+{
+	fprintf(stderr,"\nError in .cf file:\n\n");
+	fprintf(stderr,"%s\n\n",pbuf);
+	fprintf(stderr,"(%s)\n\n",nbuf);
+	exit(1);
+
+}
+
+void get_str(fp,buf,str)
+	FILE	*fp;
+	char	*buf;
+	char	*str;
+{
+	if (fscanf(fp,"%s",buf) == EOF){
+		fprintf(stderr,"Premature EOF detected.\n\n");
+		parse_err();
+	}
+	if (strlen(pbuf) > MAX_PARSE_BUF -512) strcpy(pbuf, pbuf +512);
+	strcat(pbuf,buf);
+	strcat(pbuf,str);
+}
+
+void get_nums(str,nv,offset,vec)
+	char	*str;
+	int	nv;
+	int	offset;
+	int	*vec;
+{
+	int	c, i, j, l, k, m, n;
+	int	dash;
+	int	input;
+
+	char	tmp[80];
+
+	dash = 0;
+	input = 0;
+	l = strlen(str);
+	nbp = 0;
+	for (i = 0; i <= nv; i++)
+		vec[i] = 0;
+	for (i = 0, j = 0; i < l; j++, i++){
+		c = str[i];
+		switch (c) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	nbuf[nbp++] = tmp[j] = str[i];
+					break;
+			case 'i':	input++;
+					j--;
+					nbuf[nbp++] = str[i];
+					break;
+			case '-':	if (j == 0)
+						parse_err();
+					tmp[j] = '\0';
+					j = -1;
+					nbuf[nbp++] = str[i];
+					m = atoi(tmp);
+					dash = 1;
+					break;
+			case ',':	if (j == 0)
+						parse_err();
+					tmp[j] = '\0';
+					j = -1;
+					nbuf[nbp++] = str[i];
+					if (dash){
+						n = atoi(tmp);
+						if (input == 1)
+							parse_err();
+						if (n < m)
+							parse_err();
+					}
+					else{
+						m = atoi(tmp);
+						n = m;
+					}
+					if (input == 0){
+						m += offset;
+						n += offset;
+					}
+					if (n > nv){
+						fprintf(stderr,"ERROR %d > %d\n",n,nv);
+						parse_err();
+					}
+					if ((input) && (n > offset)){
+						fprintf(stderr,"ERROR %d > %d\n",n,offset);
+						parse_err();
+					}
+					for (k = m; k <= n; k++){
+						if ((input == 0) && (k == offset))
+							vec[0] = 1;
+						else
+							vec[k] = 1;
+					}
+					input = 0;
+					dash = 0;
+					break;
+					
+			default:	parse_err();
+		}
+	}
+	if (j == 0)
+		parse_err();
+	tmp[j] = '\0';
+	nbuf[nbp++] = tmp[j];
+	if (dash){
+		n = atoi(tmp);
+		if (input == 1){
+			fprintf(stderr,"Cannot use dash to connect input and noninput\n\n");
+			parse_err();
+		}
+		if (n < m){
+			fprintf(stderr,"Upper bound must exceed lower\n\n");
+			parse_err();
+		}
+	}
+	else{
+		m = atoi(tmp);
+		n = m;
+	}
+	if (input == 0){
+		m += offset;
+		n += offset;
+	}
+	if (n > nv){
+		fprintf(stderr,"ERROR %d > %d\n",n,nv);
+		parse_err();
+	}
+	if ((input) && (n > offset)){
+		fprintf(stderr,"ERROR %d > %d\n",n,offset);
+		parse_err();
+	}
+	for (k = m; k <= n; k++){
+		if ((input == 0) && (k == offset))
+			vec[0] = 1;
+		else
+			vec[k] = 1;
+	}
+
+	nbp = 0;
+
+}
+
 void get_nodes()
 {
 	int	i;
@@ -441,154 +591,3 @@ void get_special()
 	}
 
 }
-
-void get_str(fp,buf,str)
-	FILE	*fp;
-	char	*buf;
-	char	*str;
-{
-	if (fscanf(fp,"%s",buf) == EOF){
-		fprintf(stderr,"Premature EOF detected.\n\n");
-		parse_err();
-	}
-	if (strlen(pbuf) > MAX_PARSE_BUF -512) strcpy(pbuf, pbuf +512);
-	strcat(pbuf,buf);
-	strcat(pbuf,str);
-}
-
-void get_nums(str,nv,offset,vec)
-	char	*str;
-	int	nv;
-	int	offset;
-	int	*vec;
-{
-	int	c, i, j, l, k, m, n;
-	int	dash;
-	int	input;
-
-	char	tmp[80];
-
-	dash = 0;
-	input = 0;
-	l = strlen(str);
-	nbp = 0;
-	for (i = 0; i <= nv; i++)
-		vec[i] = 0;
-	for (i = 0, j = 0; i < l; j++, i++){
-		c = str[i];
-		switch (c) {
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':	nbuf[nbp++] = tmp[j] = str[i];
-					break;
-			case 'i':	input++;
-					j--;
-					nbuf[nbp++] = str[i];
-					break;
-			case '-':	if (j == 0)
-						parse_err();
-					tmp[j] = '\0';
-					j = -1;
-					nbuf[nbp++] = str[i];
-					m = atoi(tmp);
-					dash = 1;
-					break;
-			case ',':	if (j == 0)
-						parse_err();
-					tmp[j] = '\0';
-					j = -1;
-					nbuf[nbp++] = str[i];
-					if (dash){
-						n = atoi(tmp);
-						if (input == 1)
-							parse_err();
-						if (n < m)
-							parse_err();
-					}
-					else{
-						m = atoi(tmp);
-						n = m;
-					}
-					if (input == 0){
-						m += offset;
-						n += offset;
-					}
-					if (n > nv){
-						fprintf(stderr,"ERROR %d > %d\n",n,nv);
-						parse_err();
-					}
-					if ((input) && (n > offset)){
-						fprintf(stderr,"ERROR %d > %d\n",n,offset);
-						parse_err();
-					}
-					for (k = m; k <= n; k++){
-						if ((input == 0) && (k == offset))
-							vec[0] = 1;
-						else
-							vec[k] = 1;
-					}
-					input = 0;
-					dash = 0;
-					break;
-					
-			default:	parse_err();
-		}
-	}
-	if (j == 0)
-		parse_err();
-	tmp[j] = '\0';
-	nbuf[nbp++] = tmp[j];
-	if (dash){
-		n = atoi(tmp);
-		if (input == 1){
-			fprintf(stderr,"Cannot use dash to connect input and noninput\n\n");
-			parse_err();
-		}
-		if (n < m){
-			fprintf(stderr,"Upper bound must exceed lower\n\n");
-			parse_err();
-		}
-	}
-	else{
-		m = atoi(tmp);
-		n = m;
-	}
-	if (input == 0){
-		m += offset;
-		n += offset;
-	}
-	if (n > nv){
-		fprintf(stderr,"ERROR %d > %d\n",n,nv);
-		parse_err();
-	}
-	if ((input) && (n > offset)){
-		fprintf(stderr,"ERROR %d > %d\n",n,offset);
-		parse_err();
-	}
-	for (k = m; k <= n; k++){
-		if ((input == 0) && (k == offset))
-			vec[0] = 1;
-		else
-			vec[k] = 1;
-	}
-
-	nbp = 0;
-
-}
-
-void parse_err()
-{
-	fprintf(stderr,"\nError in .cf file:\n\n");
-	fprintf(stderr,"%s\n\n",pbuf);
-	fprintf(stderr,"(%s)\n\n",nbuf);
-	exit(1);
-
-}
-

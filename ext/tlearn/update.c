@@ -219,7 +219,7 @@ update_inputs(aold,tick,flag,maxtime,local)
 	
 }
 
-update_targets(atarget,time,tick,flag,maxtime)
+void update_targets(atarget,time,tick,flag,maxtime)
 	float	*atarget;
 	long	time;
 	int	tick;
@@ -406,7 +406,7 @@ update_targets(atarget,time,tick,flag,maxtime)
 
 }
 
-update_reset(time,tick,flag,maxtime,now)
+void update_reset(time,tick,flag,maxtime,now)
 	long	time;
 	int	tick;
 	int	flag;
@@ -481,7 +481,7 @@ update_reset(time,tick,flag,maxtime,now)
 
 }
 
-update_weights(awt,adwt,awinc)
+void update_weights(awt,adwt,awinc)
 	float	**awt;
 	float	**adwt;
 	float	**awinc;
@@ -576,5 +576,3 @@ update_weights(awt,adwt,awinc)
 
 	return;
 }
-
-
